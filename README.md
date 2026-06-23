@@ -1,7 +1,8 @@
-# AlienLM Attack Evals
+# AlienLM Recovery Evals
 
-This repository collects the compact attack and evaluation experiments that are
-kept outside the official `AlienLM` code branches.
+This repository collects the compact recovery, robustness, and diagnostic
+evaluation experiments that are kept outside the official `AlienLM` code
+branches.
 
 Included material is limited to scripts, configs, summaries, and paper notes.
 Raw logs, sample-level JSONL dumps, per-task evaluation dumps, checkpoints, and

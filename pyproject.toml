@@ -1,7 +1,7 @@
 [project]
-name = "alienlm-attack-evals"
+name = "alienlm-recovery-evals"
 version = "0.1.0"
-description = "Compact AlienLM attack, ablation, and diagnostic evaluation scripts."
+description = "Compact AlienLM recovery, robustness, ablation, and diagnostic evaluation scripts."
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [

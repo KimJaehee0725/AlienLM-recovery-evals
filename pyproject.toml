@@ -1,0 +1,22 @@
+[project]
+name = "alienlm-attack-evals"
+version = "0.1.0"
+description = "Compact AlienLM attack, ablation, and diagnostic evaluation scripts."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "datasets>=3.0",
+    "transformers>=4.40",
+]
+
+[project.optional-dependencies]
+train = [
+    "axolotl",
+]
+eval = [
+    "lm_eval==0.4.7",
+    "vllm==0.7.2",
+]
+
+[tool.uv]
+package = false

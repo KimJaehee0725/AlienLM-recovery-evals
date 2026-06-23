@@ -1,0 +1,40 @@
+{
+  "alien_length_stats": {
+    "avg_tokens": 1288.9915238095239,
+    "max_tokens": 16084,
+    "min_tokens": 53,
+    "total_tokens": 27068822
+  },
+  "aligned_pair_rate": 0.0,
+  "aligned_pairs": 0,
+  "aligned_tokens": 0,
+  "candidate_cipher_tokens": 0,
+  "correct_tokens": 608,
+  "k_known_pairs": 10000,
+  "known_mappings_size": 0,
+  "known_only_accuracy": 0.0,
+  "known_only_correct_tokens": 0,
+  "known_only_coverage": 0.0,
+  "known_only_covered_tokens": 0,
+  "known_only_precision": 0.0,
+  "known_only_total_tokens": 572481,
+  "min_confidence": 0.01,
+  "n": 3,
+  "observer_name": "phi3",
+  "observer_tokenizer_path": "/workspace/CACHE/MODELS/models--microsoft--Phi-3-mini-4k-instruct/snapshots/f39ac1d28e925b323eae81227eaba4464caced4e",
+  "plain_length_stats": {
+    "avg_tokens": 587.9342380952381,
+    "max_tokens": 11893,
+    "min_tokens": 25,
+    "total_tokens": 12346619
+  },
+  "recovered_mapping_size": 1000,
+  "reference_corpus": "tulu3",
+  "reference_size": 10000,
+  "test_size": 1000,
+  "token_accuracy": 0.0010620439804989161,
+  "top_k_tokens": 1000,
+  "total_pairs": 10000,
+  "total_tokens": 572481,
+  "train_size": 10000
+}

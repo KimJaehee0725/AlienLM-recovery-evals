@@ -1,0 +1,79 @@
+base_model: /workspace/CACHE/MODELS/models--meta-llama--Meta-Llama-3-8B-Instruct/snapshots/8afb486c1db24fe5011ec46dfbe5b5dccdb575c2
+model_type: LlamaForCausalLM
+tokenizer_type: AutoTokenizer
+tokenizer_config: /workspace/data2/jaehee/AlienLM/outputs/Llama3-8B-Instruct-AlienLM-50-all-tokenizer-v3-32-qwenv2/checkpoint-9306
+
+load_in_8bit: false
+load_in_4bit: false
+strict: false
+
+datasets:
+  - path: /workspace/codes/AlienLMv2/icml2026-rebuttal/data-volume/data/subsets/magpie_mix_50k_seed42.jsonl
+    type: chat_template
+    chat_template: llama3
+    conversation: llama3
+    field_messages: conversations
+    message_field_role: from
+    message_field_content: value
+    roles:
+      user: ["human", "user"]
+      assistant: ["gpt", "assistant", "ai"]
+      system: ["system"]
+
+dataset_prepared_path: /workspace/codes/AlienLMv2/icml2026-rebuttal/data-volume/data-prepared/magpie_mix_50k_seed42_stepmatch_eval
+val_set_size: 0.001
+output_dir: /workspace/data2/jaehee/AlienLM/outputs/icml2026-rebuttal/data-volume/Llama3-8B-Instruct-AlienLM-50k-stepmatch4654-qwenv2-seed42-ga2
+
+sequence_len: 2048
+sample_packing: true
+eval_sample_packing: false
+pad_to_sequence_len: true
+
+wandb_project: magpie-alienlmv2
+wandb_entity:
+wandb_watch:
+wandb_name: Llama3-8B-Instruct-AlienLM-50k-stepmatch4654-qwenv2-seed42-ga2
+wandb_log_model:
+
+gradient_accumulation_steps: 2
+micro_batch_size: 2
+num_epochs: 20
+max_steps: 4654
+optimizer: paged_adamw_8bit
+lr_scheduler: constant
+learning_rate: 2e-5
+
+train_on_inputs: false
+group_by_length: false
+bf16: auto
+fp16:
+tf32: false
+
+gradient_checkpointing: true
+gradient_checkpointing_kwargs:
+  use_reentrant: false
+early_stopping_patience:
+resume_from_checkpoint: /workspace/data2/jaehee/AlienLM/outputs/icml2026-rebuttal/data-volume/Llama3-8B-Instruct-AlienLM-50k-stepmatch4654-qwenv2-seed42-ga2/checkpoint-2000-nooptresume
+auto_resume_from_checkpoints: false
+logging_steps: 1
+xformers_attention:
+flash_attention: false
+sdp_attention: true
+
+seed: 42
+warmup_steps: 0
+eval_strategy: steps
+eval_steps: 1000
+eval_table_size:
+save_strategy: steps
+save_steps: 1000
+save_total_limit: 5
+debug:
+deepspeed:
+weight_decay: 0.0
+fsdp:
+fsdp_config:
+special_tokens:
+  bos_token: <|begin_of_text|>
+  eos_token: <|eot_id|>
+  pad_token: <|reserved_special_token_0|>

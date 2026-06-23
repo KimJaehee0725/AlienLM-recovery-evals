@@ -1,0 +1,38 @@
+{
+  "alien_tokenizer_path": "/workspace/data2/jaehee/AlienLM/outputs/Llama3-8B-Instruct-AlienLM-50-all-tokenizer-v3-32-qwenv2/checkpoint-9306",
+  "dataset_counts": {
+    "pro": 0,
+    "reasoning": 21000
+  },
+  "k_known_pairs": 10000,
+  "min_confidence": 0.01,
+  "n": 3,
+  "observer_tokenizers": [
+    [
+      "llama3",
+      "/workspace/CACHE/MODELS/models--meta-llama--Meta-Llama-3-8B-Instruct/snapshots/8afb486c1db24fe5011ec46dfbe5b5dccdb575c2"
+    ],
+    [
+      "qwen25",
+      "/workspace/CACHE/MODELS/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28"
+    ],
+    [
+      "gemma2",
+      "/workspace/CACHE/MODELS/models--google--gemma-2-9b-it/snapshots/11c9b309abf73637e4b6f9a3fa1e92e615547819"
+    ],
+    [
+      "mistral",
+      "/workspace/CACHE/MODELS/models--mistralai--Mistral-7B-Instruct-v0.3/snapshots/c170c708c41dac9275d15a8fff4eca08d52bab71"
+    ],
+    [
+      "phi3",
+      "/workspace/CACHE/MODELS/models--microsoft--Phi-3-mini-4k-instruct/snapshots/f39ac1d28e925b323eae81227eaba4464caced4e"
+    ]
+  ],
+  "reference_corpus": "tulu3",
+  "reference_size": 10000,
+  "test_size": 1000,
+  "top_k_tokens": 1000,
+  "train_size": 10000,
+  "victim_tokenizer_path": "/workspace/CACHE/MODELS/models--meta-llama--Meta-Llama-3-8B-Instruct/snapshots/8afb486c1db24fe5011ec46dfbe5b5dccdb575c2"
+}

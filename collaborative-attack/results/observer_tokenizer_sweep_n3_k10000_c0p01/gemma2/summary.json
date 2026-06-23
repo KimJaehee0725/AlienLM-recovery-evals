@@ -1,0 +1,40 @@
+{
+  "alien_length_stats": {
+    "avg_tokens": 813.5404761904762,
+    "max_tokens": 11999,
+    "min_tokens": 41,
+    "total_tokens": 17084350
+  },
+  "aligned_pair_rate": 0.0,
+  "aligned_pairs": 0,
+  "aligned_tokens": 0,
+  "candidate_cipher_tokens": 0,
+  "correct_tokens": 440,
+  "k_known_pairs": 10000,
+  "known_mappings_size": 0,
+  "known_only_accuracy": 0.0,
+  "known_only_correct_tokens": 0,
+  "known_only_coverage": 0.0,
+  "known_only_covered_tokens": 0,
+  "known_only_precision": 0.0,
+  "known_only_total_tokens": 530244,
+  "min_confidence": 0.01,
+  "n": 3,
+  "observer_name": "gemma2",
+  "observer_tokenizer_path": "/workspace/CACHE/MODELS/models--google--gemma-2-9b-it/snapshots/11c9b309abf73637e4b6f9a3fa1e92e615547819",
+  "plain_length_stats": {
+    "avg_tokens": 545.9404285714286,
+    "max_tokens": 11889,
+    "min_tokens": 24,
+    "total_tokens": 11464749
+  },
+  "recovered_mapping_size": 1000,
+  "reference_corpus": "tulu3",
+  "reference_size": 10000,
+  "test_size": 1000,
+  "token_accuracy": 0.0008298066550493735,
+  "top_k_tokens": 1000,
+  "total_pairs": 10000,
+  "total_tokens": 530244,
+  "train_size": 10000
+}

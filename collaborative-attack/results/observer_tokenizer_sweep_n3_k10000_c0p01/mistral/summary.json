@@ -1,0 +1,40 @@
+{
+  "alien_length_stats": {
+    "avg_tokens": 1284.8509047619048,
+    "max_tokens": 16033,
+    "min_tokens": 53,
+    "total_tokens": 26981869
+  },
+  "aligned_pair_rate": 0.0,
+  "aligned_pairs": 0,
+  "aligned_tokens": 0,
+  "candidate_cipher_tokens": 0,
+  "correct_tokens": 401,
+  "k_known_pairs": 10000,
+  "known_mappings_size": 0,
+  "known_only_accuracy": 0.0,
+  "known_only_correct_tokens": 0,
+  "known_only_coverage": 0.0,
+  "known_only_covered_tokens": 0,
+  "known_only_precision": 0.0,
+  "known_only_total_tokens": 573553,
+  "min_confidence": 0.01,
+  "n": 3,
+  "observer_name": "mistral",
+  "observer_tokenizer_path": "/workspace/CACHE/MODELS/models--mistralai--Mistral-7B-Instruct-v0.3/snapshots/c170c708c41dac9275d15a8fff4eca08d52bab71",
+  "plain_length_stats": {
+    "avg_tokens": 588.8692857142858,
+    "max_tokens": 11894,
+    "min_tokens": 25,
+    "total_tokens": 12366255
+  },
+  "recovered_mapping_size": 1000,
+  "reference_corpus": "tulu3",
+  "reference_size": 10000,
+  "test_size": 1000,
+  "token_accuracy": 0.0006991507323647509,
+  "top_k_tokens": 1000,
+  "total_pairs": 10000,
+  "total_tokens": 573553,
+  "train_size": 10000
+}

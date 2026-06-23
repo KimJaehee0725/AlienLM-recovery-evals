@@ -1,0 +1,40 @@
+{
+  "alien_length_stats": {
+    "avg_tokens": 637.1027619047619,
+    "max_tokens": 11968,
+    "min_tokens": 35,
+    "total_tokens": 13379158
+  },
+  "aligned_pair_rate": 0.0005,
+  "aligned_pairs": 5,
+  "aligned_tokens": 493,
+  "candidate_cipher_tokens": 189,
+  "correct_tokens": 251,
+  "k_known_pairs": 10000,
+  "known_mappings_size": 0,
+  "known_only_accuracy": 0.0,
+  "known_only_correct_tokens": 0,
+  "known_only_coverage": 0.0,
+  "known_only_covered_tokens": 0,
+  "known_only_precision": 0.0,
+  "known_only_total_tokens": 498637,
+  "min_confidence": 0.01,
+  "n": 3,
+  "observer_name": "qwen25",
+  "observer_tokenizer_path": "/workspace/CACHE/MODELS/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28",
+  "plain_length_stats": {
+    "avg_tokens": 515.0500952380952,
+    "max_tokens": 11870,
+    "min_tokens": 24,
+    "total_tokens": 10816052
+  },
+  "recovered_mapping_size": 1000,
+  "reference_corpus": "tulu3",
+  "reference_size": 10000,
+  "test_size": 1000,
+  "token_accuracy": 0.0005033721925970195,
+  "top_k_tokens": 1000,
+  "total_pairs": 10000,
+  "total_tokens": 498637,
+  "train_size": 10000
+}

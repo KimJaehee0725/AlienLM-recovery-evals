@@ -1,0 +1,125 @@
+{
+  "full-0.5epoch": {
+    "run_root": "/workspace/codes/AlienLMv2/icml2026-rebuttal/data-volume/results/checkpoint-2327",
+    "macro_average": 0.48575272565664906,
+    "tasks": {
+      "mmlu": {
+        "metric_key": "acc,none",
+        "value": 0.35970659450220765,
+        "result_path": "/workspace/codes/AlienLMv2/icml2026-rebuttal/data-volume/results/checkpoint-2327/main/mmlu/5-shot/__workspace__data2__jaehee__AlienLM__outputs__Llama3-8B-Instruct-AlienLM-50-all-tokenizer-v3-32-qwenv2__checkpoint-2327/results_2026-03-30T06-00-26.354795.json"
+      },
+      "arc_easy": {
+        "metric_key": "acc_norm,none",
+        "value": 0.6254208754208754,
+        "result_path": "/workspace/codes/AlienLMv2/icml2026-rebuttal/data-volume/results/checkpoint-2327/main/arc_easy/25-shot/__workspace__data2__jaehee__AlienLM__outputs__Llama3-8B-Instruct-AlienLM-50-all-tokenizer-v3-32-qwenv2__checkpoint-2327/results_2026-03-30T06-08-38.093213.json"
+      },
+      "arc_challenge": {
+        "metric_key": "acc_norm,none",
+        "value": 0.4180887372013652,
+        "result_path": "/workspace/codes/AlienLMv2/icml2026-rebuttal/data-volume/results/checkpoint-2327/main/arc_challenge/25-shot/__workspace__data2__jaehee__AlienLM__outputs__Llama3-8B-Instruct-AlienLM-50-all-tokenizer-v3-32-qwenv2__checkpoint-2327/results_2026-03-30T06-13-59.359597.json"
+      },
+      "hellaswag": {
+        "metric_key": "acc_norm,none",
+        "value": 0.5951005775741884,
+        "result_path": "/workspace/codes/AlienLMv2/icml2026-rebuttal/data-volume/results/checkpoint-2327/main/hellaswag/10-shot/__workspace__data2__jaehee__AlienLM__outputs__Llama3-8B-Instruct-AlienLM-50-all-tokenizer-v3-32-qwenv2__checkpoint-2327/results_2026-03-30T06-42-45.104913.json"
+      },
+      "winogrande": {
+        "metric_key": "acc,none",
+        "value": 0.595895816890292,
+        "result_path": "/workspace/codes/AlienLMv2/icml2026-rebuttal/data-volume/results/checkpoint-2327/main/winogrande/5-shot/__workspace__data2__jaehee__AlienLM__outputs__Llama3-8B-Instruct-AlienLM-50-all-tokenizer-v3-32-qwenv2__checkpoint-2327/results_2026-03-30T06-44-42.269335.json"
+      },
+      "truthfulqa_mc1": {
+        "metric_key": "acc,none",
+        "value": 0.35495716034271724,
+        "result_path": "/workspace/codes/AlienLMv2/icml2026-rebuttal/data-volume/results/checkpoint-2327/main/truthfulqa_mc1/0-shot/__workspace__data2__jaehee__AlienLM__outputs__Llama3-8B-Instruct-AlienLM-50-all-tokenizer-v3-32-qwenv2__checkpoint-2327/results_2026-03-30T06-47-02.135144.json"
+      },
+      "gsm8k_cot": {
+        "metric_key": "exact_match,strict-match",
+        "value": 0.45109931766489764,
+        "result_path": "/workspace/codes/AlienLMv2/icml2026-rebuttal/data-volume/results/checkpoint-2327/main/gsm8k_cot/5-shot/__workspace__data2__jaehee__AlienLM__outputs__Llama3-8B-Instruct-AlienLM-50-all-tokenizer-v3-32-qwenv2__checkpoint-2327/results_2026-03-30T06-55-49.844064.json"
+      }
+    }
+  },
+  "50k-ga2": {
+    "run_root": "/workspace/codes/AlienLMv2/icml2026-rebuttal/data-volume/results/Llama3-8B-Instruct-AlienLM-50k-stepmatch4654-qwenv2-seed42-ga2",
+    "macro_average": 0.4543484400279021,
+    "tasks": {
+      "mmlu": {
+        "metric_key": "acc,none",
+        "value": 0.3575701467027489,
+        "result_path": "/workspace/codes/AlienLMv2/icml2026-rebuttal/data-volume/results/Llama3-8B-Instruct-AlienLM-50k-stepmatch4654-qwenv2-seed42-ga2/main/mmlu/5-shot/__workspace__data2__jaehee__AlienLM__outputs__icml2026-rebuttal__data-volume__Llama3-8B-Instruct-AlienLM-50k-stepmatch4654-qwenv2-seed42-ga2/results_2026-03-30T02-20-46.076631.json"
+      },
+      "arc_easy": {
+        "metric_key": "acc_norm,none",
+        "value": 0.5972222222222222,
+        "result_path": "/workspace/codes/AlienLMv2/icml2026-rebuttal/data-volume/results/Llama3-8B-Instruct-AlienLM-50k-stepmatch4654-qwenv2-seed42-ga2/main/arc_easy/25-shot/__workspace__data2__jaehee__AlienLM__outputs__icml2026-rebuttal__data-volume__Llama3-8B-Instruct-AlienLM-50k-stepmatch4654-qwenv2-seed42-ga2/results_2026-03-30T02-29-11.278934.json"
+      },
+      "arc_challenge": {
+        "metric_key": "acc_norm,none",
+        "value": 0.39761092150170646,
+        "result_path": "/workspace/codes/AlienLMv2/icml2026-rebuttal/data-volume/results/Llama3-8B-Instruct-AlienLM-50k-stepmatch4654-qwenv2-seed42-ga2/main/arc_challenge/25-shot/__workspace__data2__jaehee__AlienLM__outputs__icml2026-rebuttal__data-volume__Llama3-8B-Instruct-AlienLM-50k-stepmatch4654-qwenv2-seed42-ga2/results_2026-03-30T02-34-43.413233.json"
+      },
+      "hellaswag": {
+        "metric_key": "acc_norm,none",
+        "value": 0.5277833100975902,
+        "result_path": "/workspace/codes/AlienLMv2/icml2026-rebuttal/data-volume/results/Llama3-8B-Instruct-AlienLM-50k-stepmatch4654-qwenv2-seed42-ga2/main/hellaswag/10-shot/__workspace__data2__jaehee__AlienLM__outputs__icml2026-rebuttal__data-volume__Llama3-8B-Instruct-AlienLM-50k-stepmatch4654-qwenv2-seed42-ga2/results_2026-03-30T03-03-36.813537.json"
+      },
+      "winogrande": {
+        "metric_key": "acc,none",
+        "value": 0.569060773480663,
+        "result_path": "/workspace/codes/AlienLMv2/icml2026-rebuttal/data-volume/results/Llama3-8B-Instruct-AlienLM-50k-stepmatch4654-qwenv2-seed42-ga2/main/winogrande/5-shot/__workspace__data2__jaehee__AlienLM__outputs__icml2026-rebuttal__data-volume__Llama3-8B-Instruct-AlienLM-50k-stepmatch4654-qwenv2-seed42-ga2/results_2026-03-30T03-05-48.617017.json"
+      },
+      "truthfulqa_mc1": {
+        "metric_key": "acc,none",
+        "value": 0.32558139534883723,
+        "result_path": "/workspace/codes/AlienLMv2/icml2026-rebuttal/data-volume/results/Llama3-8B-Instruct-AlienLM-50k-stepmatch4654-qwenv2-seed42-ga2/main/truthfulqa_mc1/0-shot/__workspace__data2__jaehee__AlienLM__outputs__icml2026-rebuttal__data-volume__Llama3-8B-Instruct-AlienLM-50k-stepmatch4654-qwenv2-seed42-ga2/results_2026-03-30T03-08-04.751024.json"
+      },
+      "gsm8k_cot": {
+        "metric_key": "exact_match,strict-match",
+        "value": 0.40561031084154664,
+        "result_path": "/workspace/codes/AlienLMv2/icml2026-rebuttal/data-volume/results/Llama3-8B-Instruct-AlienLM-50k-stepmatch4654-qwenv2-seed42-ga2/main/gsm8k_cot/5-shot/__workspace__data2__jaehee__AlienLM__outputs__icml2026-rebuttal__data-volume__Llama3-8B-Instruct-AlienLM-50k-stepmatch4654-qwenv2-seed42-ga2/results_2026-03-30T03-17-33.952484.json"
+      }
+    }
+  },
+  "150k-ga2": {
+    "run_root": "/workspace/codes/AlienLMv2/icml2026-rebuttal/data-volume/results/Llama3-8B-Instruct-AlienLM-150k-stepmatch4654-qwenv2-seed42-ga2",
+    "macro_average": 0.5064469646594008,
+    "tasks": {
+      "mmlu": {
+        "metric_key": "acc,none",
+        "value": 0.39559891753311494,
+        "result_path": "/workspace/codes/AlienLMv2/icml2026-rebuttal/data-volume/results/Llama3-8B-Instruct-AlienLM-150k-stepmatch4654-qwenv2-seed42-ga2/main/mmlu/5-shot/__workspace__data2__jaehee__AlienLM__outputs__icml2026-rebuttal__data-volume__Llama3-8B-Instruct-AlienLM-150k-stepmatch4654-qwenv2-seed42-ga2/results_2026-03-30T02-20-43.283028.json"
+      },
+      "arc_easy": {
+        "metric_key": "acc_norm,none",
+        "value": 0.6502525252525253,
+        "result_path": "/workspace/codes/AlienLMv2/icml2026-rebuttal/data-volume/results/Llama3-8B-Instruct-AlienLM-150k-stepmatch4654-qwenv2-seed42-ga2/main/arc_easy/25-shot/__workspace__data2__jaehee__AlienLM__outputs__icml2026-rebuttal__data-volume__Llama3-8B-Instruct-AlienLM-150k-stepmatch4654-qwenv2-seed42-ga2/results_2026-03-30T02-29-11.378528.json"
+      },
+      "arc_challenge": {
+        "metric_key": "acc_norm,none",
+        "value": 0.44795221843003413,
+        "result_path": "/workspace/codes/AlienLMv2/icml2026-rebuttal/data-volume/results/Llama3-8B-Instruct-AlienLM-150k-stepmatch4654-qwenv2-seed42-ga2/main/arc_challenge/25-shot/__workspace__data2__jaehee__AlienLM__outputs__icml2026-rebuttal__data-volume__Llama3-8B-Instruct-AlienLM-150k-stepmatch4654-qwenv2-seed42-ga2/results_2026-03-30T02-34-43.469794.json"
+      },
+      "hellaswag": {
+        "metric_key": "acc_norm,none",
+        "value": 0.5959968133837881,
+        "result_path": "/workspace/codes/AlienLMv2/icml2026-rebuttal/data-volume/results/Llama3-8B-Instruct-AlienLM-150k-stepmatch4654-qwenv2-seed42-ga2/main/hellaswag/10-shot/__workspace__data2__jaehee__AlienLM__outputs__icml2026-rebuttal__data-volume__Llama3-8B-Instruct-AlienLM-150k-stepmatch4654-qwenv2-seed42-ga2/results_2026-03-30T03-03-40.658476.json"
+      },
+      "winogrande": {
+        "metric_key": "acc,none",
+        "value": 0.6006314127861089,
+        "result_path": "/workspace/codes/AlienLMv2/icml2026-rebuttal/data-volume/results/Llama3-8B-Instruct-AlienLM-150k-stepmatch4654-qwenv2-seed42-ga2/main/winogrande/5-shot/__workspace__data2__jaehee__AlienLM__outputs__icml2026-rebuttal__data-volume__Llama3-8B-Instruct-AlienLM-150k-stepmatch4654-qwenv2-seed42-ga2/results_2026-03-30T03-05-48.689404.json"
+      },
+      "truthfulqa_mc1": {
+        "metric_key": "acc,none",
+        "value": 0.35128518971848227,
+        "result_path": "/workspace/codes/AlienLMv2/icml2026-rebuttal/data-volume/results/Llama3-8B-Instruct-AlienLM-150k-stepmatch4654-qwenv2-seed42-ga2/main/truthfulqa_mc1/0-shot/__workspace__data2__jaehee__AlienLM__outputs__icml2026-rebuttal__data-volume__Llama3-8B-Instruct-AlienLM-150k-stepmatch4654-qwenv2-seed42-ga2/results_2026-03-30T03-08-11.191589.json"
+      },
+      "gsm8k_cot": {
+        "metric_key": "exact_match,strict-match",
+        "value": 0.5034116755117514,
+        "result_path": "/workspace/codes/AlienLMv2/icml2026-rebuttal/data-volume/results/Llama3-8B-Instruct-AlienLM-150k-stepmatch4654-qwenv2-seed42-ga2/main/gsm8k_cot/5-shot/__workspace__data2__jaehee__AlienLM__outputs__icml2026-rebuttal__data-volume__Llama3-8B-Instruct-AlienLM-150k-stepmatch4654-qwenv2-seed42-ga2/results_2026-03-30T03-17-45.632771.json"
+      }
+    }
+  }
+}

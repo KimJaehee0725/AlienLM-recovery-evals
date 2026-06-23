@@ -1,0 +1,444 @@
+{
+  "sample_size": 10000,
+  "sample_path": "/workspace/codes/AlienLMv2/icml2026-rebuttal/token-length/results/magpie_450k_sample10k_seed42.jsonl",
+  "models": {
+    "llama3_8b_instruct": {
+      "original_tokenizer_path": "/workspace/CACHE/MODELS/models--meta-llama--Meta-Llama-3-8B-Instruct/snapshots/8afb486c1db24fe5011ec46dfbe5b5dccdb575c2",
+      "alien_tokenizer_path": "/workspace/data2/jaehee/AlienLM/outputs/Llama3-8B-Instruct-AlienLM-50-all-tokenizer-v3-32-qwenv2",
+      "alien_family_note": "Alien tokenizer built from the Qwen-family vocabulary permutation.",
+      "overall": {
+        "original_plain": {
+          "count": 10000,
+          "mean": 617.8083,
+          "median": 627.0,
+          "stdev": 247.53650468387485,
+          "min": 38,
+          "max": 4087,
+          "total": 6178083
+        },
+        "alien_on_plain": {
+          "count": 10000,
+          "mean": 617.8083,
+          "median": 627.0,
+          "stdev": 247.53650468387485,
+          "min": 38,
+          "max": 4087,
+          "total": 6178083
+        },
+        "alien_on_alienized": {
+          "count": 10000,
+          "mean": 645.5669,
+          "median": 649.0,
+          "stdev": 264.31967600689507,
+          "min": 42,
+          "max": 6407,
+          "total": 6455669
+        },
+        "original_on_alienized": {
+          "count": 10000,
+          "mean": 645.5669,
+          "median": 649.0,
+          "stdev": 264.31967600689507,
+          "min": 42,
+          "max": 6407,
+          "total": 6455669
+        }
+      },
+      "by_source": {
+        "magpie_pro": {
+          "original_plain": {
+            "count": 6594,
+            "mean": 675.9792235365484,
+            "median": 652.5,
+            "stdev": 118.52595071914392,
+            "min": 411,
+            "max": 2065,
+            "total": 4457407
+          },
+          "alien_on_plain": {
+            "count": 6594,
+            "mean": 675.9792235365484,
+            "median": 652.5,
+            "stdev": 118.52595071914392,
+            "min": 411,
+            "max": 2065,
+            "total": 4457407
+          },
+          "alien_on_alienized": {
+            "count": 6594,
+            "mean": 700.414771003943,
+            "median": 676.0,
+            "stdev": 127.406724908505,
+            "min": 416,
+            "max": 2312,
+            "total": 4618535
+          },
+          "original_on_alienized": {
+            "count": 6594,
+            "mean": 700.414771003943,
+            "median": 676.0,
+            "stdev": 127.406724908505,
+            "min": 416,
+            "max": 2312,
+            "total": 4618535
+          }
+        },
+        "magpie_reasoning": {
+          "original_plain": {
+            "count": 3406,
+            "mean": 505.1896652965355,
+            "median": 448.0,
+            "stdev": 365.3346327092294,
+            "min": 38,
+            "max": 4087,
+            "total": 1720676
+          },
+          "alien_on_plain": {
+            "count": 3406,
+            "mean": 505.1896652965355,
+            "median": 448.0,
+            "stdev": 365.3346327092294,
+            "min": 38,
+            "max": 4087,
+            "total": 1720676
+          },
+          "alien_on_alienized": {
+            "count": 3406,
+            "mean": 539.3816793893129,
+            "median": 475.0,
+            "stdev": 395.7242287790151,
+            "min": 42,
+            "max": 6407,
+            "total": 1837134
+          },
+          "original_on_alienized": {
+            "count": 3406,
+            "mean": 539.3816793893129,
+            "median": 475.0,
+            "stdev": 395.7242287790151,
+            "min": 42,
+            "max": 6407,
+            "total": 1837134
+          }
+        }
+      },
+      "alien_operational_length_match_count": 49,
+      "alien_operational_length_match_rate": 0.0049,
+      "alien_operational_id_match_count": 0,
+      "alien_operational_id_match_rate": 0.0,
+      "wrapper_operational_length_match_count": 49,
+      "wrapper_operational_length_match_rate": 0.0049,
+      "wrapper_operational_id_match_count": 0,
+      "wrapper_operational_id_match_rate": 0.0,
+      "deltas": {
+        "alien_on_plain_vs_original": {
+          "avg_token_diff": 0.0,
+          "relative_diff_pct": 0.0,
+          "total_token_diff": 0
+        },
+        "alien_on_alienized_vs_original": {
+          "avg_token_diff": 27.7586,
+          "relative_diff_pct": 4.493076574076449,
+          "total_token_diff": 277586
+        },
+        "original_on_alienized_vs_original": {
+          "avg_token_diff": 27.7586,
+          "relative_diff_pct": 4.493076574076449,
+          "total_token_diff": 277586
+        }
+      }
+    },
+    "qwen25_7b_instruct": {
+      "original_tokenizer_path": "/workspace/CACHE/MODELS/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28",
+      "alien_tokenizer_path": "/workspace/data2/jaehee/AlienLM/outputs/Qwen25-7b-Instruct-AlienLM-50-all-tokenizer-v3-32-llama",
+      "alien_family_note": "Alien tokenizer built from the Llama-family vocabulary permutation.",
+      "overall": {
+        "original_plain": {
+          "count": 10000,
+          "mean": 626.7329,
+          "median": 632.0,
+          "stdev": 282.19454097765606,
+          "min": 39,
+          "max": 11809,
+          "total": 6267329
+        },
+        "alien_on_plain": {
+          "count": 10000,
+          "mean": 626.7329,
+          "median": 632.0,
+          "stdev": 282.19454097765606,
+          "min": 39,
+          "max": 11809,
+          "total": 6267329
+        },
+        "alien_on_alienized": {
+          "count": 10000,
+          "mean": 631.7696,
+          "median": 638.0,
+          "stdev": 282.99412205174866,
+          "min": 39,
+          "max": 11810,
+          "total": 6317696
+        },
+        "original_on_alienized": {
+          "count": 10000,
+          "mean": 631.7696,
+          "median": 638.0,
+          "stdev": 282.99412205174866,
+          "min": 39,
+          "max": 11810,
+          "total": 6317696
+        }
+      },
+      "by_source": {
+        "magpie_pro": {
+          "original_plain": {
+            "count": 6594,
+            "mean": 681.4629966636336,
+            "median": 657.0,
+            "stdev": 124.2987106444703,
+            "min": 411,
+            "max": 2259,
+            "total": 4493567
+          },
+          "alien_on_plain": {
+            "count": 6594,
+            "mean": 681.4629966636336,
+            "median": 657.0,
+            "stdev": 124.2987106444703,
+            "min": 411,
+            "max": 2259,
+            "total": 4493567
+          },
+          "alien_on_alienized": {
+            "count": 6594,
+            "mean": 687.6044889293297,
+            "median": 664.0,
+            "stdev": 124.89338766057918,
+            "min": 410,
+            "max": 2282,
+            "total": 4534064
+          },
+          "original_on_alienized": {
+            "count": 6594,
+            "mean": 687.6044889293297,
+            "median": 664.0,
+            "stdev": 124.89338766057918,
+            "min": 410,
+            "max": 2282,
+            "total": 4534064
+          }
+        },
+        "magpie_reasoning": {
+          "original_plain": {
+            "count": 3406,
+            "mean": 520.775689958896,
+            "median": 456.0,
+            "stdev": 432.2810520874957,
+            "min": 39,
+            "max": 11809,
+            "total": 1773762
+          },
+          "alien_on_plain": {
+            "count": 3406,
+            "mean": 520.775689958896,
+            "median": 456.0,
+            "stdev": 432.2810520874957,
+            "min": 39,
+            "max": 11809,
+            "total": 1773762
+          },
+          "alien_on_alienized": {
+            "count": 3406,
+            "mean": 523.6735173223723,
+            "median": 459.0,
+            "stdev": 432.68061643672615,
+            "min": 39,
+            "max": 11810,
+            "total": 1783632
+          },
+          "original_on_alienized": {
+            "count": 3406,
+            "mean": 523.6735173223723,
+            "median": 459.0,
+            "stdev": 432.68061643672615,
+            "min": 39,
+            "max": 11810,
+            "total": 1783632
+          }
+        }
+      },
+      "alien_operational_length_match_count": 802,
+      "alien_operational_length_match_rate": 0.0802,
+      "alien_operational_id_match_count": 75,
+      "alien_operational_id_match_rate": 0.0075,
+      "wrapper_operational_length_match_count": 802,
+      "wrapper_operational_length_match_rate": 0.0802,
+      "wrapper_operational_id_match_count": 0,
+      "wrapper_operational_id_match_rate": 0.0,
+      "deltas": {
+        "alien_on_plain_vs_original": {
+          "avg_token_diff": 0.0,
+          "relative_diff_pct": 0.0,
+          "total_token_diff": 0
+        },
+        "alien_on_alienized_vs_original": {
+          "avg_token_diff": 5.036699999999996,
+          "relative_diff_pct": 0.8036437850956979,
+          "total_token_diff": 50367
+        },
+        "original_on_alienized_vs_original": {
+          "avg_token_diff": 5.036699999999996,
+          "relative_diff_pct": 0.8036437850956979,
+          "total_token_diff": 50367
+        }
+      }
+    },
+    "gemma2_9b_it": {
+      "original_tokenizer_path": "/workspace/CACHE/MODELS/models--google--gemma-2-9b-it/snapshots/11c9b309abf73637e4b6f9a3fa1e92e615547819",
+      "alien_tokenizer_path": "/workspace/data2/jaehee/AlienLM/outputs/Gemma2-9b-it-AlienLM-50-all-tokenizer-v3-32-qwen",
+      "alien_family_note": "Alien tokenizer built from the Qwen-family vocabulary permutation.",
+      "overall": {
+        "original_plain": {
+          "count": 10000,
+          "mean": 644.6784,
+          "median": 645.0,
+          "stdev": 290.1383817653914,
+          "min": 40,
+          "max": 11796,
+          "total": 6446784
+        },
+        "alien_on_plain": {
+          "count": 10000,
+          "mean": 644.6784,
+          "median": 645.0,
+          "stdev": 290.1383817653914,
+          "min": 40,
+          "max": 11796,
+          "total": 6446784
+        },
+        "alien_on_alienized": {
+          "count": 10000,
+          "mean": 667.2477,
+          "median": 668.0,
+          "stdev": 295.28981212481744,
+          "min": 41,
+          "max": 11789,
+          "total": 6672477
+        },
+        "original_on_alienized": {
+          "count": 10000,
+          "mean": 667.2477,
+          "median": 668.0,
+          "stdev": 295.28981212481744,
+          "min": 41,
+          "max": 11789,
+          "total": 6672477
+        }
+      },
+      "by_source": {
+        "magpie_pro": {
+          "original_plain": {
+            "count": 6594,
+            "mean": 692.7347588717015,
+            "median": 669.0,
+            "stdev": 128.04873596690308,
+            "min": 477,
+            "max": 2653,
+            "total": 4567893
+          },
+          "alien_on_plain": {
+            "count": 6594,
+            "mean": 692.7347588717015,
+            "median": 669.0,
+            "stdev": 128.04873596690308,
+            "min": 477,
+            "max": 2653,
+            "total": 4567893
+          },
+          "alien_on_alienized": {
+            "count": 6594,
+            "mean": 717.9636032757052,
+            "median": 692.0,
+            "stdev": 134.34476247869662,
+            "min": 492,
+            "max": 2685,
+            "total": 4734252
+          },
+          "original_on_alienized": {
+            "count": 6594,
+            "mean": 717.9636032757052,
+            "median": 692.0,
+            "stdev": 134.34476247869662,
+            "min": 492,
+            "max": 2685,
+            "total": 4734252
+          }
+        },
+        "magpie_reasoning": {
+          "original_plain": {
+            "count": 3406,
+            "mean": 551.641514973576,
+            "median": 486.0,
+            "stdev": 449.7582978768016,
+            "min": 40,
+            "max": 11796,
+            "total": 1878891
+          },
+          "alien_on_plain": {
+            "count": 3406,
+            "mean": 551.641514973576,
+            "median": 486.0,
+            "stdev": 449.7582978768016,
+            "min": 40,
+            "max": 11796,
+            "total": 1878891
+          },
+          "alien_on_alienized": {
+            "count": 3406,
+            "mean": 569.0619495008808,
+            "median": 503.5,
+            "stdev": 454.3626303533483,
+            "min": 41,
+            "max": 11789,
+            "total": 1938225
+          },
+          "original_on_alienized": {
+            "count": 3406,
+            "mean": 569.0619495008808,
+            "median": 503.5,
+            "stdev": 454.3626303533483,
+            "min": 41,
+            "max": 11789,
+            "total": 1938225
+          }
+        }
+      },
+      "alien_operational_length_match_count": 73,
+      "alien_operational_length_match_rate": 0.0073,
+      "alien_operational_id_match_count": 0,
+      "alien_operational_id_match_rate": 0.0,
+      "wrapper_operational_length_match_count": 73,
+      "wrapper_operational_length_match_rate": 0.0073,
+      "wrapper_operational_id_match_count": 0,
+      "wrapper_operational_id_match_rate": 0.0,
+      "deltas": {
+        "alien_on_plain_vs_original": {
+          "avg_token_diff": 0.0,
+          "relative_diff_pct": 0.0,
+          "total_token_diff": 0
+        },
+        "alien_on_alienized_vs_original": {
+          "avg_token_diff": 22.5693,
+          "relative_diff_pct": 3.500861825058821,
+          "total_token_diff": 225693
+        },
+        "original_on_alienized_vs_original": {
+          "avg_token_diff": 22.5693,
+          "relative_diff_pct": 3.500861825058821,
+          "total_token_diff": 225693
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,29 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+*.egg-info/
+
+# Local environments and caches
+.venv/
+.cache/
+.python-version
+
+# Experiment outputs kept outside git
+data/
+data-prepared/
+logs/
+outputs/
+wandb/
+*.log
+*.jsonl
+*.raw.jsonl
+
+# Large or raw evaluation dumps
+results_*.json
+samples_*.jsonl
+recovered_mapping.json
+known_mappings.json
+
+# Archives and OS/editor noise
+*.zip
+.DS_Store

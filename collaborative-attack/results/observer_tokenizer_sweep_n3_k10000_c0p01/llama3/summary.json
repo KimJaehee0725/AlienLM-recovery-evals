@@ -1,0 +1,40 @@
+{
+  "alien_length_stats": {
+    "avg_tokens": 534.4722380952381,
+    "max_tokens": 6547,
+    "min_tokens": 26,
+    "total_tokens": 11223917
+  },
+  "aligned_pair_rate": 0.0081,
+  "aligned_pairs": 81,
+  "aligned_tokens": 32260,
+  "candidate_cipher_tokens": 4288,
+  "correct_tokens": 5772,
+  "k_known_pairs": 10000,
+  "known_mappings_size": 5,
+  "known_only_accuracy": 0.011377199992604203,
+  "known_only_correct_tokens": 5538,
+  "known_only_coverage": 0.09293845259397283,
+  "known_only_covered_tokens": 45239,
+  "known_only_precision": 0.12241649903844029,
+  "known_only_total_tokens": 486763,
+  "min_confidence": 0.01,
+  "n": 3,
+  "observer_name": "llama3",
+  "observer_tokenizer_path": "/workspace/CACHE/MODELS/models--meta-llama--Meta-Llama-3-8B-Instruct/snapshots/8afb486c1db24fe5011ec46dfbe5b5dccdb575c2",
+  "plain_length_stats": {
+    "avg_tokens": 500.51366666666667,
+    "max_tokens": 4087,
+    "min_tokens": 23,
+    "total_tokens": 10510787
+  },
+  "recovered_mapping_size": 1000,
+  "reference_corpus": "tulu3",
+  "reference_size": 10000,
+  "test_size": 1000,
+  "token_accuracy": 0.011857926752855085,
+  "top_k_tokens": 1000,
+  "total_pairs": 10000,
+  "total_tokens": 486763,
+  "train_size": 10000
+}

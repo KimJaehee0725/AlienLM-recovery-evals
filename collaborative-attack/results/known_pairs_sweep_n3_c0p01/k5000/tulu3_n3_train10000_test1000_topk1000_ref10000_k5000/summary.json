@@ -1,0 +1,12 @@
+{
+  "token_accuracy": 0.003911877254706223,
+  "correct_tokens": 1928,
+  "total_tokens": 492858,
+  "recovered_mapping_size": 3158,
+  "true_bijection_size": 128254,
+  "top_k_tokens": 1000,
+  "known_mappings_size": 2430,
+  "bijection_recovery_rate": 0.004749841671944269,
+  "correct_mappings": 15,
+  "total_mappings": 3158
+}

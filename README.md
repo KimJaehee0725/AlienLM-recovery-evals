@@ -1,8 +1,8 @@
-# AlienLM Recovery Test
+# AlienLM Recovery Evals
 
 Compact recovery and robustness tests for AlienLM. This repository keeps runnable scripts, configs, and small summary artifacts only. Planning notes, paper-only notes, raw logs, checkpoints, caches, sample-level dumps, and large generated outputs are intentionally excluded.
 
-Remote: `https://github.com/KimJaehee0725/Alienlm-recovery-test`
+Remote: `https://github.com/KimJaehee0725/AlienLM-recovery-evals`
 
 ## Repository Layout
 

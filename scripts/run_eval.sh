@@ -50,6 +50,10 @@ USAGE
 need_env() {
   local name="$1"
   if [[ "${DRY_RUN}" == "1" ]]; then
+    if [[ -z "${!name:-}" ]]; then
+      printf -v "${name}" "<${name}>"
+      export "${name}"
+    fi
     return 0
   fi
   if [[ -z "${!name:-}" ]]; then

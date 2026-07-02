@@ -4,6 +4,37 @@ Compact recovery and robustness tests for AlienLM. This repository keeps runnabl
 
 Remote: `https://github.com/KimJaehee0725/AlienLM-recovery-evals`
 
+## Installation
+
+Use `uv` for a local editable install:
+
+```bash
+git clone https://github.com/KimJaehee0725/AlienLM-recovery-evals.git
+cd AlienLM-recovery-evals
+uv sync --extra ngram --extra analysis
+uv pip install -e .
+```
+
+Or install the CLI directly from GitHub:
+
+```bash
+uv tool install "git+https://github.com/KimJaehee0725/AlienLM-recovery-evals.git"
+alienlm-recovery-evals init ./alienlm-recovery-evals-work
+alienlm-recovery-evals --root ./alienlm-recovery-evals-work smoke
+```
+
+Optional extras are split by workload: `ngram`, `analysis`, `llm`, `mt`, `train`, `eval`, and `all`.
+
+## Build
+
+```bash
+uv build
+```
+
+This produces a wheel and source distribution under `dist/`. The wheel installs
+the `alienlm-recovery-evals` CLI and includes runnable script templates that can
+be copied into a writable workspace with `alienlm-recovery-evals init`.
+
 ## Repository Layout
 
 | Area | Purpose | Entry point |
@@ -43,6 +74,7 @@ These checks validate syntax and entrypoint wiring. They do not run paper-scale 
 
 ```bash
 scripts/run_eval.sh smoke
+alienlm-recovery-evals smoke
 ```
 
 ## Convenience Runner
@@ -52,6 +84,9 @@ The top-level runner mirrors the commands below and supports dry-run checks:
 ```bash
 scripts/run_eval.sh list
 DRY_RUN=1 ALIEN_TOKENIZER_PATH=/path/to/alien/tokenizer scripts/run_eval.sh o2-known-ngram
+
+alienlm-recovery-evals list
+ALIEN_TOKENIZER_PATH=/path/to/alien/tokenizer alienlm-recovery-evals --dry-run o2-known-ngram
 ```
 
 See [`scripts/README.md`](scripts/README.md) for all targets and required environment variables.

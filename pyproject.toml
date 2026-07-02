@@ -1,22 +1,126 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
 [project]
 name = "alienlm-recovery-evals"
 version = "0.1.0"
 description = "Compact AlienLM recovery, robustness, ablation, and diagnostic evaluation scripts."
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = [
+authors = [
+    { name = "DSBA Lab" },
+]
+keywords = [
+    "alienlm",
+    "language-models",
+    "recovery-evaluation",
+    "tokenizer",
+    "robustness",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = []
+
+[project.optional-dependencies]
+ngram = [
+    "datasets>=3.0",
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "transformers>=4.40",
+]
+analysis = [
     "datasets>=3.0",
     "transformers>=4.40",
 ]
-
-[project.optional-dependencies]
+llm = [
+    "numpy>=1.24",
+    "openai>=1.0",
+    "rouge-score>=0.1.2",
+    "sacrebleu>=2.4",
+    "tqdm>=4.66",
+]
+mt = [
+    "accelerate>=0.30",
+    "datasets>=3.0",
+    "numpy>=1.24",
+    "torch>=2.2",
+    "tqdm>=4.66",
+    "transformers>=4.40",
+]
 train = [
-    "axolotl",
+    "axolotl>=0.9",
 ]
 eval = [
     "lm_eval==0.4.7",
     "vllm==0.7.2",
+    "accelerate>=0.30",
+]
+all = [
+    "accelerate>=0.30",
+    "axolotl>=0.9",
+    "datasets>=3.0",
+    "lm_eval==0.4.7",
+    "numpy>=1.24",
+    "openai>=1.0",
+    "rouge-score>=0.1.2",
+    "sacrebleu>=2.4",
+    "scipy>=1.10",
+    "torch>=2.2",
+    "tqdm>=4.66",
+    "transformers>=4.40",
+    "vllm==0.7.2",
 ]
 
-[tool.uv]
-package = false
+[project.urls]
+Homepage = "https://github.com/KimJaehee0725/AlienLM-recovery-evals"
+Repository = "https://github.com/KimJaehee0725/AlienLM-recovery-evals"
+Paper = "https://arxiv.org/abs/2601.22710"
+Models = "https://huggingface.co/collections/dsba-lab/alienlm"
+
+[project.scripts]
+alienlm-recovery-evals = "alienlm_recovery_evals.cli:main"
+
+[tool.hatch.build]
+exclude = [
+    "/.git",
+    "/dist",
+    "**/.cache/**",
+    "**/__pycache__/**",
+    "**/*.log",
+    "**/*.pyc",
+    "**/*.pyo",
+    "**/*.jsonl",
+    "**/data/**",
+    "**/data-prepared/**",
+    "**/logs/**",
+    "**/outputs/**",
+    "**/results/**",
+    "**/wandb/**",
+]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/README.md",
+    "/pyproject.toml",
+    "/src",
+    "/scripts",
+    "/recovery-attacks",
+    "/robustness",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/alienlm_recovery_evals"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"README.md" = "alienlm_recovery_evals/resources/README.md"
+"scripts" = "alienlm_recovery_evals/resources/scripts"
+"recovery-attacks" = "alienlm_recovery_evals/resources/recovery-attacks"
+"robustness" = "alienlm_recovery_evals/resources/robustness"

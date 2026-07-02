@@ -3,6 +3,14 @@
 This directory contains repo-level helpers for running or checking the recovery
 and robustness evaluations from a fresh clone.
 
+If the package is installed, the same targets are available through:
+
+```bash
+alienlm-recovery-evals list
+alienlm-recovery-evals smoke
+ALIEN_TOKENIZER_PATH=/path/to/alien/tokenizer alienlm-recovery-evals --dry-run o2-known-ngram
+```
+
 ## Quick Checks
 
 ```bash

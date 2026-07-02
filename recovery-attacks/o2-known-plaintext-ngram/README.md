@@ -33,4 +33,4 @@ python scripts/summarize_observer_tokenizer_results.py
 python scripts/summarize_seedpool_results.py
 ```
 
-Outputs go to ignored `attack_results/` and `logs/` directories.
+Run outputs go to ignored `attack_results/` and `logs/` directories. Compact sweep summaries are written under `results/summaries/`.

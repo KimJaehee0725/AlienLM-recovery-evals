@@ -6,7 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 RESULT_ROOT = ROOT / "results" / "seedpool_sweep_n3_c0p95_occ3"
-OUTPUT_MD = ROOT / "notes" / "seedpool_sweep_n3_c0p95_occ3.md"
+OUTPUT_MD = ROOT / "results" / "summaries" / "seedpool_sweep_n3_c0p95_occ3.md"
 
 
 def load_summary(mode: str, k_value: int) -> dict:

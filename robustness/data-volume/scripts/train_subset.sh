@@ -22,9 +22,9 @@ done
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 DV_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-REPO_DIR="$(cd "$DV_DIR/../.." && pwd)"
-AXOLOTL_BIN="${AXOLOTL_BIN:-$REPO_DIR/.venv/bin/axolotl}"
-export PATH="$REPO_DIR/.venv/bin:$PATH"
+ALIENLM_CODE_ROOT="${ALIENLM_CODE_ROOT:?set ALIENLM_CODE_ROOT to the local AlienLM repo used for Axolotl training}"
+AXOLOTL_BIN="${AXOLOTL_BIN:-$ALIENLM_CODE_ROOT/.venv/bin/axolotl}"
+export PATH="$ALIENLM_CODE_ROOT/.venv/bin:$PATH"
 
 case "$SIZE" in
   50k)
@@ -47,14 +47,14 @@ if [[ ! -f "$DATA_PATH" ]]; then
   exit 1
 fi
 
-DEFAULT_HF_HOME="${HF_HOME:-/workspace/CACHE/MODELS}"
-export HF_HOME="$DEFAULT_HF_HOME"
-export HF_DATASETS_CACHE="${HF_DATASETS_CACHE:-/workspace/data2/jaehee/AlienLM/HF_DATASET}"
+DEFAULT_CACHE_ROOT="${HF_HOME:-$DV_DIR/.cache}"
+export HF_HOME="$DEFAULT_CACHE_ROOT"
+export HF_DATASETS_CACHE="${HF_DATASETS_CACHE:-$DEFAULT_CACHE_ROOT/hf_datasets}"
 export HF_HUB_CACHE="${HF_HUB_CACHE:-$HF_HOME/hub}"
 export TRANSFORMERS_CACHE="${TRANSFORMERS_CACHE:-$HF_HUB_CACHE}"
 export HF_DATASETS_OFFLINE="${HF_DATASETS_OFFLINE:-1}"
 export HF_HUB_OFFLINE="${HF_HUB_OFFLINE:-1}"
-export CUDA_VISIBLE_DEVICES="0,1,2,3"
+export CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-0,1,2,3}"
 export WANDB_PROJECT="${WANDB_PROJECT:-magpie-alienlmv2}"
 export WANDB_DIR="${WANDB_DIR:-$DV_DIR/wandb}"
 RUN_TAG="${RUN_TAG:-}"
@@ -70,6 +70,7 @@ echo "[train_subset]"
 echo "size=$SIZE"
 echo "config=$CONFIG_PATH"
 echo "data=$DATA_PATH"
+echo "alienlm_code_root=$ALIENLM_CODE_ROOT"
 echo "axolotl_bin=$AXOLOTL_BIN"
 echo "PATH=$PATH"
 echo "HF_HOME=$HF_HOME"

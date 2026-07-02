@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 
+from __future__ import annotations
+
+import argparse
 import json
+import os
 from dataclasses import dataclass
 from pathlib import Path
 from statistics import mean, pvariance
@@ -8,75 +12,124 @@ from statistics import mean, pvariance
 from transformers import AutoTokenizer
 
 
+EXP_DIR = Path(__file__).resolve().parents[1]
+DEFAULT_OUTPUT_ROOT = EXP_DIR / "outputs"
+DEFAULT_RESULTS_DIR = EXP_DIR / "results"
+LOCAL_FILES_ONLY = os.environ.get("LOCAL_FILES_ONLY", "0") == "1"
+
+
 @dataclass
 class RunSpec:
     backbone: str
     variant: str
     model_path: str
-    sample_path: str
-    result_path: str
+    sample_path: Path
+    result_path: Path
 
 
-RUNS = [
-    RunSpec(
-        backbone="Llama3-8B-Instruct",
-        variant="original",
-        model_path="/workspace/CACHE/MODELS/models--meta-llama--Meta-Llama-3-8B-Instruct/snapshots/8afb486c1db24fe5011ec46dfbe5b5dccdb575c2",
-        sample_path="/workspace/data2/jaehee/AlienLM/outputs/icml2026-rebuttal/long-generation/meta-llama/Meta-Llama-3-8B-Instruct/truthfulqa_gen/0-shot/__workspace__CACHE__MODELS__models--meta-llama--Meta-Llama-3-8B-Instruct__snapshots__8afb486c1db24fe5011ec46dfbe5b5dccdb575c2/samples_truthfulqa_gen_latest.jsonl",
-        result_path="/workspace/data2/jaehee/AlienLM/outputs/icml2026-rebuttal/long-generation/meta-llama/Meta-Llama-3-8B-Instruct/truthfulqa_gen/0-shot/__workspace__CACHE__MODELS__models--meta-llama--Meta-Llama-3-8B-Instruct__snapshots__8afb486c1db24fe5011ec46dfbe5b5dccdb575c2/results_latest.json",
-    ),
-    RunSpec(
-        backbone="Llama3-8B-Instruct",
-        variant="alienlm",
-        model_path="/workspace/data2/jaehee/AlienLM/outputs/Llama3-8B-Instruct-AlienLM-50-all-tokenizer-v3-32-qwenv2",
-        sample_path="/workspace/data2/jaehee/AlienLM/outputs/Llama3-8B-Instruct-AlienLM-50-all-tokenizer-v3-32-qwenv2/truthfulqa_gen/0-shot/__workspace__data2__jaehee__AlienLM__outputs__Llama3-8B-Instruct-AlienLM-50-all-tokenizer-v3-32-qwenv2/samples_truthfulqa_gen_2025-03-01T11-28-35.238123.jsonl",
-        result_path="/workspace/data2/jaehee/AlienLM/outputs/Llama3-8B-Instruct-AlienLM-50-all-tokenizer-v3-32-qwenv2/truthfulqa_gen/0-shot/__workspace__data2__jaehee__AlienLM__outputs__Llama3-8B-Instruct-AlienLM-50-all-tokenizer-v3-32-qwenv2/results_2025-03-01T11-28-35.238123.json",
-    ),
-    RunSpec(
-        backbone="Qwen2.5-7B-Instruct",
-        variant="original",
-        model_path="/workspace/CACHE/MODELS/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28",
-        sample_path="/workspace/data2/jaehee/AlienLM/outputs/Qwen25-7b-Instruct-AlienLM-50-all-tokenizer-v3-32-llama/truthfulqa_gen/0-shot/Qwen__Qwen2.5-7B-Instruct/samples_truthfulqa_gen_2025-04-07T20-47-44.335692.jsonl",
-        result_path="/workspace/data2/jaehee/AlienLM/outputs/Qwen25-7b-Instruct-AlienLM-50-all-tokenizer-v3-32-llama/truthfulqa_gen/0-shot/Qwen__Qwen2.5-7B-Instruct/results_2025-04-07T20-47-44.335692.json",
-    ),
-    RunSpec(
-        backbone="Qwen2.5-7B-Instruct",
-        variant="alienlm",
-        model_path="/workspace/data2/jaehee/AlienLM/outputs/Qwen25-7b-Instruct-AlienLM-50-all-tokenizer-v3-32-llama",
-        sample_path="/workspace/data2/jaehee/AlienLM/outputs/Qwen25-7b-Instruct-AlienLM-50-all-tokenizer-v3-32-llama/truthfulqa_gen/0-shot/__workspace__data2__jaehee__AlienLM__outputs__Qwen25-7b-Instruct-AlienLM-50-all-tokenizer-v3-32-llama/samples_truthfulqa_gen_2025-04-07T18-33-11.045150.jsonl",
-        result_path="/workspace/data2/jaehee/AlienLM/outputs/Qwen25-7b-Instruct-AlienLM-50-all-tokenizer-v3-32-llama/truthfulqa_gen/0-shot/__workspace__data2__jaehee__AlienLM__outputs__Qwen25-7b-Instruct-AlienLM-50-all-tokenizer-v3-32-llama/results_2025-04-07T18-33-11.045150.json",
-    ),
-    RunSpec(
-        backbone="Gemma2-9B-it",
-        variant="original",
-        model_path="/workspace/CACHE/MODELS/models--google--gemma-2-9b-it/snapshots/11c9b309abf73637e4b6f9a3fa1e92e615547819",
-        sample_path="/workspace/data2/jaehee/AlienLM/outputs/Gemma2-9b-it/truthfulqa_gen/0-shot/google__gemma-2-9b-it/samples_truthfulqa_gen_2025-04-08T19-47-23.870757.jsonl",
-        result_path="/workspace/data2/jaehee/AlienLM/outputs/Gemma2-9b-it/truthfulqa_gen/0-shot/google__gemma-2-9b-it/results_2025-04-08T19-47-23.870757.json",
-    ),
-    RunSpec(
-        backbone="Gemma2-9B-it",
-        variant="alienlm",
-        model_path="/workspace/data2/jaehee/AlienLM/outputs/Gemma2-9b-it-AlienLM-50-all-tokenizer-v3-32-qwen",
-        sample_path="/workspace/data2/jaehee/AlienLM/outputs/Gemma2-9b-it-AlienLM-50-all-tokenizer-v3-32-qwen/truthfulqa_gen/0-shot/__workspace__data2__jaehee__AlienLM__outputs__Gemma2-9b-it-AlienLM-50-all-tokenizer-v3-32-qwen/samples_truthfulqa_gen_2025-04-08T15-16-09.041683.jsonl",
-        result_path="/workspace/data2/jaehee/AlienLM/outputs/Gemma2-9b-it-AlienLM-50-all-tokenizer-v3-32-qwen/truthfulqa_gen/0-shot/__workspace__data2__jaehee__AlienLM__outputs__Gemma2-9b-it-AlienLM-50-all-tokenizer-v3-32-qwen/results_2025-04-08T15-16-09.041683.json",
-    ),
-]
+MODEL_DEFAULTS = {
+    "llama_original": {
+        "backbone": "Llama3-8B-Instruct",
+        "variant": "original",
+        "model_path": os.environ.get("LLAMA_MODEL_PATH", "meta-llama/Meta-Llama-3-8B-Instruct"),
+    },
+    "llama_alien": {
+        "backbone": "Llama3-8B-Instruct",
+        "variant": "alienlm",
+        "model_path": os.environ.get(
+            "LLAMA_ALIEN_MODEL_PATH", "dsba-lab/llama3-8b-instruct-alienlm-full"
+        ),
+    },
+    "qwen_original": {
+        "backbone": "Qwen2.5-7B-Instruct",
+        "variant": "original",
+        "model_path": os.environ.get("QWEN_MODEL_PATH", "Qwen/Qwen2.5-7B-Instruct"),
+    },
+    "qwen_alien": {
+        "backbone": "Qwen2.5-7B-Instruct",
+        "variant": "alienlm",
+        "model_path": os.environ.get("QWEN_ALIEN_MODEL_PATH", ""),
+    },
+    "gemma_original": {
+        "backbone": "Gemma2-9B-it",
+        "variant": "original",
+        "model_path": os.environ.get("GEMMA_MODEL_PATH", "google/gemma-2-9b-it"),
+    },
+    "gemma_alien": {
+        "backbone": "Gemma2-9B-it",
+        "variant": "alienlm",
+        "model_path": os.environ.get("GEMMA_ALIEN_MODEL_PATH", ""),
+    },
+}
 
 
-def resolve_latest(path_str: str) -> Path:
-    path = Path(path_str)
-    if path.exists():
-        return path
-    if path.name.endswith("_latest.json") or path.name.endswith("_latest.jsonl"):
-        parent = path.parent
-        stem = path.name.replace("_latest", "_*")
-        matches = sorted(parent.glob(stem))
-        if matches:
-            return matches[-1]
-    raise FileNotFoundError(path_str)
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Measure TruthfulQA generation input/output lengths.")
+    parser.add_argument(
+        "--output-root",
+        type=Path,
+        default=Path(os.environ.get("LONG_GENERATION_OUTPUT_ROOT", DEFAULT_OUTPUT_ROOT)),
+        help="Root containing <model_key>/truthfulqa_gen/0-shot/... outputs.",
+    )
+    parser.add_argument(
+        "--results-dir",
+        type=Path,
+        default=Path(os.environ.get("OUTPUT_DIR", DEFAULT_RESULTS_DIR)),
+        help="Directory where summary files are written.",
+    )
+    parser.add_argument(
+        "--runs-json",
+        type=Path,
+        default=Path(os.environ["TRUTHFULQA_RUNS_JSON"])
+        if os.environ.get("TRUTHFULQA_RUNS_JSON")
+        else None,
+        help="Optional JSON list of explicit run specs.",
+    )
+    return parser.parse_args()
 
 
-def summarize(values):
+def latest_match(pattern: str) -> Path | None:
+    matches = sorted(Path().glob(pattern) if not pattern.startswith("/") else Path("/").glob(pattern[1:]))
+    return matches[-1] if matches else None
+
+
+def discover_runs(output_root: Path) -> list[RunSpec]:
+    runs = []
+    for model_key, meta in MODEL_DEFAULTS.items():
+        if not meta["model_path"]:
+            continue
+        run_root = output_root / model_key / "truthfulqa_gen" / "0-shot"
+        sample_path = latest_match(str(run_root / "**" / "samples_truthfulqa_gen*.jsonl"))
+        result_path = latest_match(str(run_root / "**" / "results*.json"))
+        if sample_path is None or result_path is None:
+            continue
+        runs.append(
+            RunSpec(
+                backbone=meta["backbone"],
+                variant=meta["variant"],
+                model_path=meta["model_path"],
+                sample_path=sample_path,
+                result_path=result_path,
+            )
+        )
+    return runs
+
+
+def load_explicit_runs(path: Path) -> list[RunSpec]:
+    payload = json.loads(path.read_text())
+    return [
+        RunSpec(
+            backbone=row["backbone"],
+            variant=row["variant"],
+            model_path=row["model_path"],
+            sample_path=Path(row["sample_path"]),
+            result_path=Path(row["result_path"]),
+        )
+        for row in payload
+    ]
+
+
+def summarize(values: list[int]) -> dict:
     return {
         "mean": mean(values),
         "variance": pvariance(values),
@@ -85,20 +138,17 @@ def summarize(values):
     }
 
 
-def load_lengths(sample_path: Path, tokenizer):
+def load_lengths(sample_path: Path, tokenizer) -> dict:
     input_tok = []
     output_tok = []
     input_char = []
     output_char = []
 
-    with sample_path.open() as f:
-        for line in f:
+    with sample_path.open(encoding="utf-8") as handle:
+        for line in handle:
             row = json.loads(line)
             prompt = row["arguments"]["gen_args_0"]["arg_0"]
-            if row.get("filtered_resps"):
-                output = row["filtered_resps"][0]
-            else:
-                output = row["resps"][0][0]
+            output = row["filtered_resps"][0] if row.get("filtered_resps") else row["resps"][0][0]
 
             input_tok.append(len(tokenizer.encode(prompt, add_special_tokens=False)))
             output_tok.append(len(tokenizer.encode(output, add_special_tokens=False)))
@@ -114,7 +164,7 @@ def load_lengths(sample_path: Path, tokenizer):
     }
 
 
-def load_scores(result_path: Path):
+def load_scores(result_path: Path) -> dict:
     result = json.loads(result_path.read_text())
     res = result["results"]["truthfulqa_gen"]
     return {
@@ -127,36 +177,44 @@ def load_scores(result_path: Path):
     }
 
 
-def main():
-    out_dir = Path("/workspace/codes/AlienLMv2/icml2026-rebuttal/long-generation/results")
-    out_dir.mkdir(parents=True, exist_ok=True)
+def main() -> None:
+    args = parse_args()
+    args.results_dir.mkdir(parents=True, exist_ok=True)
+
+    runs = load_explicit_runs(args.runs_json) if args.runs_json else discover_runs(args.output_root)
+    if not runs:
+        raise FileNotFoundError(
+            "No TruthfulQA runs found. Set LONG_GENERATION_OUTPUT_ROOT or pass --runs-json."
+        )
 
     rows = []
-    for spec in RUNS:
-        sample_path = resolve_latest(spec.sample_path)
-        result_path = resolve_latest(spec.result_path)
-        tokenizer = AutoTokenizer.from_pretrained(spec.model_path, trust_remote_code=True)
-        lengths = load_lengths(sample_path, tokenizer)
-        scores = load_scores(result_path)
+    for spec in runs:
+        tokenizer = AutoTokenizer.from_pretrained(
+            spec.model_path,
+            trust_remote_code=True,
+            local_files_only=LOCAL_FILES_ONLY,
+        )
+        lengths = load_lengths(spec.sample_path, tokenizer)
+        scores = load_scores(spec.result_path)
         rows.append(
             {
                 "backbone": spec.backbone,
                 "variant": spec.variant,
-                "sample_path": str(sample_path),
-                "result_path": str(result_path),
+                "sample_path": str(spec.sample_path),
+                "result_path": str(spec.result_path),
                 "model_path": spec.model_path,
                 "scores": scores,
                 "lengths": lengths,
             }
         )
 
-    json_path = out_dir / "truthfulqa_gen_length_summary.json"
+    json_path = args.results_dir / "truthfulqa_gen_length_summary.json"
     json_path.write_text(json.dumps(rows, indent=2))
 
     md_lines = [
         "# TruthfulQA Generation Length Summary",
         "",
-        "All token lengths are measured with the tokenizer actually used by the evaluated model variant.",
+        "All token lengths are measured with the tokenizer used by the evaluated model variant.",
         "",
         "| Backbone | Variant | BLEU Acc | ROUGE-L Acc | Mean Input Tok | Var Input Tok | Mean Output Tok | Var Output Tok |",
         "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |",
@@ -175,14 +233,7 @@ def main():
             )
         )
 
-    md_lines.extend(
-        [
-            "",
-            "## Detailed Notes",
-            "",
-        ]
-    )
-
+    md_lines.extend(["", "## Detailed Notes", ""])
     for row in rows:
         md_lines.extend(
             [
@@ -203,8 +254,10 @@ def main():
             ]
         )
 
-    md_path = out_dir / "truthfulqa_gen_length_summary.md"
-    md_path.write_text("\n".join(md_lines))
+    md_path = args.results_dir / "truthfulqa_gen_length_summary.md"
+    md_path.write_text("\n".join(md_lines) + "\n")
+    print(f"Saved JSON to {json_path}")
+    print(f"Saved Markdown to {md_path}")
 
 
 if __name__ == "__main__":

@@ -3,20 +3,27 @@
 from __future__ import annotations
 
 import json
+import os
 from itertools import combinations
 from pathlib import Path
 
 from transformers import AutoTokenizer
 
 
-OUTPUT_DIR = Path("/workspace/codes/AlienLMv2/icml2026-rebuttal/vocab-overlap/results")
+DEFAULT_OUTPUT_DIR = Path(__file__).resolve().parents[1] / "results"
+OUTPUT_DIR = Path(os.environ.get("OUTPUT_DIR", DEFAULT_OUTPUT_DIR))
 JSON_PATH = OUTPUT_DIR / "vocab_overlap_summary.json"
 MD_PATH = OUTPUT_DIR / "vocab_overlap_summary.md"
+LOCAL_FILES_ONLY = os.environ.get("LOCAL_FILES_ONLY", "0") == "1"
 
 TOKENIZER_SPECS = {
-    "llama3_8b_instruct": "/workspace/CACHE/MODELS/models--meta-llama--Meta-Llama-3-8B-Instruct/snapshots/8afb486c1db24fe5011ec46dfbe5b5dccdb575c2",
-    "qwen25_7b_instruct": "/workspace/CACHE/MODELS/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28",
-    "gemma2_9b_it": "/workspace/CACHE/MODELS/models--google--gemma-2-9b-it/snapshots/11c9b309abf73637e4b6f9a3fa1e92e615547819",
+    "llama3_8b_instruct": os.environ.get(
+        "LLAMA_TOKENIZER_PATH", "meta-llama/Meta-Llama-3-8B-Instruct"
+    ),
+    "qwen25_7b_instruct": os.environ.get(
+        "QWEN_TOKENIZER_PATH", "Qwen/Qwen2.5-7B-Instruct"
+    ),
+    "gemma2_9b_it": os.environ.get("GEMMA_TOKENIZER_PATH", "google/gemma-2-9b-it"),
 }
 
 
@@ -40,7 +47,7 @@ def main() -> None:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
     tokenizers = {
-        name: AutoTokenizer.from_pretrained(path, local_files_only=True)
+        name: AutoTokenizer.from_pretrained(path, local_files_only=LOCAL_FILES_ONLY)
         for name, path in TOKENIZER_SPECS.items()
     }
 

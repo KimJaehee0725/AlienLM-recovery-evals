@@ -2,10 +2,11 @@
 
 set -euo pipefail
 
-OUT_ROOT="${1:-/workspace/data2/jaehee/AlienLM/outputs}"
+OUT_ROOT="${1:-${ALIENLM_OUTPUT_ROOT:-./outputs}}"
 
 if [[ ! -d "$OUT_ROOT" ]]; then
   echo "Output root not found: $OUT_ROOT" >&2
+  echo "Pass a path explicitly or set ALIENLM_OUTPUT_ROOT." >&2
   exit 1
 fi
 

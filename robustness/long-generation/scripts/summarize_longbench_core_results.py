@@ -2,13 +2,18 @@
 
 import glob
 import json
+import os
 from pathlib import Path
 
 
-RESULT_GLOB = "/workspace/data2/jaehee/AlienLM/outputs/icml2026-rebuttal/long-generation/*/longbench_core/0-shot/*/results_*.json"
-ROOT = Path("/workspace/codes/AlienLMv2/icml2026-rebuttal/long-generation/results")
+EXP_DIR = Path(__file__).resolve().parents[1]
+OUTPUT_ROOT = Path(os.environ.get("LONG_GENERATION_OUTPUT_ROOT", EXP_DIR / "outputs"))
+RESULT_GLOB = os.environ.get(
+    "RESULT_GLOB", str(OUTPUT_ROOT / "*" / "longbench_core" / "0-shot" / "*" / "results_*.json")
+)
+ROOT = Path(os.environ.get("OUTPUT_DIR", EXP_DIR / "results"))
 DETAIL_MD = ROOT / "longbench_core_analysis_detailed.md"
-PAPER_MD = ROOT / "longbench_core_paper_notes.md"
+SUMMARY_MD = ROOT / "longbench_core_summary.md"
 
 
 MODEL_ORDER = [
@@ -26,7 +31,12 @@ def load_rows():
     rows = {}
     for path in sorted(glob.glob(RESULT_GLOB)):
         payload = json.loads(Path(path).read_text())
-        run_name = path.split("/long-generation/")[1].split("/")[0]
+        run_name = next(
+            (parent.name for parent in Path(path).parents if parent.name.endswith(("_original", "_alien"))),
+            "",
+        )
+        if not run_name:
+            continue
         backbone = run_name.split("_")[0]
         variant = "alien" if run_name.endswith("_alien") else "original"
         rows[(backbone, variant)] = {
@@ -43,7 +53,12 @@ def load_rows():
 
 
 def main():
+    ROOT.mkdir(parents=True, exist_ok=True)
     rows = load_rows()
+    if not rows:
+        raise FileNotFoundError(
+            f"No LongBench result files found. Set LONG_GENERATION_OUTPUT_ROOT or RESULT_GLOB. Current glob: {RESULT_GLOB}"
+        )
 
     detail_lines = [
         "# LongBench Core Analysis",
@@ -59,6 +74,8 @@ def main():
 
     for backbone, display_name in MODEL_ORDER:
         for variant in ["original", "alien"]:
+            if (backbone, variant) not in rows:
+                continue
             row = rows[(backbone, variant)]
             rel_path = row["path"]
             detail_lines.append(
@@ -78,8 +95,8 @@ def main():
         ]
     )
 
-    paper_lines = [
-        "# LongBench Core: Paper Notes",
+    summary_lines = [
+        "# LongBench Core Summary",
         "",
         "## Setup",
         "",
@@ -95,6 +112,8 @@ def main():
 
     takeaway_lines = []
     for backbone, display_name in MODEL_ORDER:
+        if (backbone, "original") not in rows or (backbone, "alien") not in rows:
+            continue
         orig = rows[(backbone, "original")]
         alien = rows[(backbone, "alien")]
         gov_delta = alien["gov"] - orig["gov"]
@@ -108,7 +127,7 @@ def main():
             f"{qasper_delta:+.4f} | {qasper_rel * 100:+.2f}% |"
         )
 
-        paper_lines.append(
+        summary_lines.append(
             f"| {display_name} | {orig['gov']:.4f} | {alien['gov']:.4f} | {orig['qasper']:.4f} | {alien['qasper']:.4f} |"
         )
 
@@ -128,7 +147,7 @@ def main():
         ]
     )
 
-    paper_lines.extend(
+    summary_lines.extend(
         [
             "",
             "## Delta Summary",
@@ -142,7 +161,7 @@ def main():
     )
 
     DETAIL_MD.write_text("\n".join(detail_lines) + "\n")
-    PAPER_MD.write_text("\n".join(paper_lines) + "\n")
+    SUMMARY_MD.write_text("\n".join(summary_lines) + "\n")
 
 
 if __name__ == "__main__":

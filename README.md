@@ -42,9 +42,19 @@ export OPENAI_API_KEY=...
 These checks validate syntax and entrypoint wiring. They do not run paper-scale experiments.
 
 ```bash
-python -m compileall -q recovery-attacks robustness
-find recovery-attacks robustness -type f -name '*.sh' -print -exec bash -n {} \;
+scripts/run_eval.sh smoke
 ```
+
+## Convenience Runner
+
+The top-level runner mirrors the commands below and supports dry-run checks:
+
+```bash
+scripts/run_eval.sh list
+DRY_RUN=1 ALIEN_TOKENIZER_PATH=/path/to/alien/tokenizer scripts/run_eval.sh o2-known-ngram
+```
+
+See [`scripts/README.md`](scripts/README.md) for all targets and required environment variables.
 
 ## Running Each Test
 
@@ -66,7 +76,7 @@ cd recovery-attacks/o2-known-plaintext-ngram
 export ALIEN_TOKENIZER_PATH=/path/to/alien/tokenizer
 export ORG_TOKENIZER_PATH=meta-llama/Meta-Llama-3-8B-Instruct
 
-python run_evaluation.py   --reference_corpus tulu3   --n 3   --train_size 10000   --test_size 1000   --top_k_tokens 1000   --reference_size 10000   --k_known_pairs 1000   --min_confidence 0.5   --alien_tokenizer_path "$ALIEN_TOKENIZER_PATH"   --output_dir ./attack_results
+python run_evaluation.py   --reference_corpus tulu3   --n 3   --train_size 10000   --test_size 1000   --top_k_tokens 1000   --reference_size 10000   --k_known_pairs 1000   --min_confidence 0.5   --alien_tokenizer_path "$ALIEN_TOKENIZER_PATH"   --org_tokenizer_path "$ORG_TOKENIZER_PATH"   --output_dir ./attack_results
 
 NON_INTERACTIVE=1 bash run_all_experiments.sh
 ```
@@ -113,7 +123,11 @@ python scripts/build_data_subsets.py --output-dir data/subsets
 bash scripts/train_subset.sh 50k
 bash scripts/train_subset.sh 150k
 bash scripts/evaluate_model.sh 50k --suite all --device 0,1 --batch-size 8
-python scripts/summarize_main_results.py
+python scripts/summarize_main_results.py \
+  --run 50k=results/<50k-run-dir> \
+  --run 150k=results/<150k-run-dir> \
+  --md-out results/data_volume_main_comparison.md \
+  --json-out results/data_volume_main_comparison.json
 ```
 
 ### Robustness: Token Length

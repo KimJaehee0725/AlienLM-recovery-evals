@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import statistics
 from collections import defaultdict
 from pathlib import Path
@@ -11,11 +12,13 @@ from datasets import load_dataset
 from transformers import AutoTokenizer
 
 
-HF_DATASET_CACHE = "/workspace/data2/jaehee/AlienLM/HF_DATASET"
-SAMPLE_PATH = Path("/workspace/codes/AlienLMv2/icml2026-rebuttal/token-length/results/magpie_450k_sample10k_seed42.jsonl")
-OUTPUT_DIR = Path("/workspace/codes/AlienLMv2/icml2026-rebuttal/token-length/results")
+HF_DATASET_CACHE = os.environ.get("HF_DATASETS_CACHE")
+DEFAULT_OUTPUT_DIR = Path(__file__).resolve().parents[1] / "results"
+OUTPUT_DIR = Path(os.environ.get("OUTPUT_DIR", DEFAULT_OUTPUT_DIR))
+SAMPLE_PATH = Path(os.environ.get("SAMPLE_PATH", OUTPUT_DIR / "magpie_450k_sample10000_seed42.jsonl"))
 JSON_PATH = OUTPUT_DIR / "original_vs_alien_token_length_summary.json"
 MD_PATH = OUTPUT_DIR / "original_vs_alien_token_length_summary.md"
+LOCAL_FILES_ONLY = os.environ.get("LOCAL_FILES_ONLY", "0") == "1"
 
 
 DATASET_SPECS = {
@@ -32,20 +35,28 @@ DATASET_SPECS = {
 
 MODEL_SPECS = {
     "llama3_8b_instruct": {
-        "original_tokenizer": "/workspace/CACHE/MODELS/models--meta-llama--Meta-Llama-3-8B-Instruct/snapshots/8afb486c1db24fe5011ec46dfbe5b5dccdb575c2",
-        "alien_tokenizer": "/workspace/data2/jaehee/AlienLM/outputs/Llama3-8B-Instruct-AlienLM-50-all-tokenizer-v3-32-qwenv2",
+        "original_tokenizer": os.environ.get(
+            "LLAMA_TOKENIZER_PATH", "meta-llama/Meta-Llama-3-8B-Instruct"
+        ),
+        "alien_tokenizer": os.environ.get(
+            "LLAMA_ALIEN_TOKENIZER_PATH", "dsba-lab/llama3-8b-instruct-alienlm-full"
+        ),
         "alien_family_note": "Alien tokenizer built from the Qwen-family vocabulary permutation.",
     },
     "qwen25_7b_instruct": {
-        "original_tokenizer": "/workspace/CACHE/MODELS/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28",
-        "alien_tokenizer": "/workspace/data2/jaehee/AlienLM/outputs/Qwen25-7b-Instruct-AlienLM-50-all-tokenizer-v3-32-llama",
+        "original_tokenizer": os.environ.get("QWEN_TOKENIZER_PATH", "Qwen/Qwen2.5-7B-Instruct"),
+        "alien_tokenizer": os.environ.get("QWEN_ALIEN_TOKENIZER_PATH", ""),
         "alien_family_note": "Alien tokenizer built from the Llama-family vocabulary permutation.",
     },
     "gemma2_9b_it": {
-        "original_tokenizer": "/workspace/CACHE/MODELS/models--google--gemma-2-9b-it/snapshots/11c9b309abf73637e4b6f9a3fa1e92e615547819",
-        "alien_tokenizer": "/workspace/data2/jaehee/AlienLM/outputs/Gemma2-9b-it-AlienLM-50-all-tokenizer-v3-32-qwen",
+        "original_tokenizer": os.environ.get("GEMMA_TOKENIZER_PATH", "google/gemma-2-9b-it"),
+        "alien_tokenizer": os.environ.get("GEMMA_ALIEN_TOKENIZER_PATH", ""),
         "alien_family_note": "Alien tokenizer built from the Qwen-family vocabulary permutation.",
     },
+}
+
+MODEL_SPECS = {
+    name: spec for name, spec in MODEL_SPECS.items() if spec["alien_tokenizer"]
 }
 
 
@@ -92,6 +103,8 @@ def rate(num: int, den: int) -> float:
 
 def main() -> None:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    if not MODEL_SPECS:
+        raise ValueError("No Alien tokenizer configured. Set LLAMA_ALIEN_TOKENIZER_PATH or another *_ALIEN_TOKENIZER_PATH.")
 
     datasets_by_alias = {
         alias: load_dataset(spec["path"], split=spec["split"], cache_dir=HF_DATASET_CACHE)
@@ -106,8 +119,12 @@ def main() -> None:
     tokenizers = {}
     for model_name, spec in MODEL_SPECS.items():
         tokenizers[model_name] = {
-            "original": AutoTokenizer.from_pretrained(spec["original_tokenizer"], local_files_only=True),
-            "alien": AutoTokenizer.from_pretrained(spec["alien_tokenizer"], local_files_only=True),
+            "original": AutoTokenizer.from_pretrained(
+                spec["original_tokenizer"], local_files_only=LOCAL_FILES_ONLY
+            ),
+            "alien": AutoTokenizer.from_pretrained(
+                spec["alien_tokenizer"], local_files_only=LOCAL_FILES_ONLY
+            ),
         }
 
     results = {

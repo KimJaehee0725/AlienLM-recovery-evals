@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import math
+import os
 import random
 import statistics
 from collections import Counter, defaultdict
@@ -14,12 +15,18 @@ from datasets import load_dataset
 from transformers import AutoTokenizer
 
 
-OUTPUT_DIR = Path("/workspace/codes/AlienLMv2/icml2026-rebuttal/token-length/results")
-SAMPLE_PATH = OUTPUT_DIR / "magpie_450k_sample10k_seed42.jsonl"
+DEFAULT_OUTPUT_DIR = Path(__file__).resolve().parents[1] / "results"
+OUTPUT_DIR = Path(os.environ.get("OUTPUT_DIR", DEFAULT_OUTPUT_DIR))
+SEED = int(os.environ.get("SEED", "42"))
+SAMPLE_SIZE = int(os.environ.get("SAMPLE_SIZE", "10000"))
+SAMPLE_PATH = Path(
+    os.environ.get("SAMPLE_PATH", OUTPUT_DIR / f"magpie_450k_sample{SAMPLE_SIZE}_seed{SEED}.jsonl")
+)
 SUMMARY_PATH = OUTPUT_DIR / "token_length_summary.json"
 MARKDOWN_PATH = OUTPUT_DIR / "token_length_summary.md"
 
-HF_DATASET_CACHE = "/workspace/data2/jaehee/AlienLM/HF_DATASET"
+HF_DATASET_CACHE = os.environ.get("HF_DATASETS_CACHE")
+LOCAL_FILES_ONLY = os.environ.get("LOCAL_FILES_ONLY", "0") == "1"
 
 DATASET_SPECS = [
     {
@@ -35,13 +42,14 @@ DATASET_SPECS = [
 ]
 
 TOKENIZER_SPECS = {
-    "llama3_8b_instruct": "/workspace/CACHE/MODELS/models--meta-llama--Meta-Llama-3-8B-Instruct/snapshots/8afb486c1db24fe5011ec46dfbe5b5dccdb575c2",
-    "qwen25_7b_instruct": "/workspace/CACHE/MODELS/models--Qwen--Qwen2.5-7B-Instruct/snapshots/a09a35458c702b33eeacc393d103063234e8bc28",
-    "gemma2_9b_it": "/workspace/CACHE/MODELS/models--google--gemma-2-9b-it/snapshots/11c9b309abf73637e4b6f9a3fa1e92e615547819",
+    "llama3_8b_instruct": os.environ.get(
+        "LLAMA_TOKENIZER_PATH", "meta-llama/Meta-Llama-3-8B-Instruct"
+    ),
+    "qwen25_7b_instruct": os.environ.get(
+        "QWEN_TOKENIZER_PATH", "Qwen/Qwen2.5-7B-Instruct"
+    ),
+    "gemma2_9b_it": os.environ.get("GEMMA_TOKENIZER_PATH", "google/gemma-2-9b-it"),
 }
-
-SEED = 42
-SAMPLE_SIZE = 10_000
 
 
 def convert_conversations(conversations: list[dict]) -> list[dict]:
@@ -129,7 +137,7 @@ def main() -> None:
     sampled_pool = sample_pool_indices(lengths=lengths, sample_size=SAMPLE_SIZE, seed=SEED)
 
     tokenizers = {
-        name: AutoTokenizer.from_pretrained(path, local_files_only=True)
+        name: AutoTokenizer.from_pretrained(path, local_files_only=LOCAL_FILES_ONLY)
         for name, path in TOKENIZER_SPECS.items()
     }
 

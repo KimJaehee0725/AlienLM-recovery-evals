@@ -47,30 +47,30 @@ done
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 DV_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-REPO_DIR="$(cd "$DV_DIR/../.." && pwd)"
+ALIENLM_CODE_ROOT="${ALIENLM_CODE_ROOT:-}"
 RESULTS_DIR="$DV_DIR/results"
-ROOT_VENV_BIN="$REPO_DIR/.venv/bin"
+ROOT_VENV_BIN="${ALIENLM_CODE_ROOT:+$ALIENLM_CODE_ROOT/.venv/bin}"
 
-if [[ -d "$ROOT_VENV_BIN" ]]; then
+if [[ -n "$ROOT_VENV_BIN" && -d "$ROOT_VENV_BIN" ]]; then
   export PATH="$ROOT_VENV_BIN:$PATH"
 fi
 
 resolve_model_path() {
   case "$1" in
     full-0.5epoch)
-      echo "/workspace/data2/jaehee/AlienLM/outputs/Llama3-8B-Instruct-AlienLM-50-all-tokenizer-v3-32-qwenv2/checkpoint-2327"
+      echo "${FULL_HALF_EPOCH_MODEL_PATH:?set FULL_HALF_EPOCH_MODEL_PATH or pass an explicit model path}"
       ;;
     full-1epoch)
-      echo "/workspace/data2/jaehee/AlienLM/outputs/Llama3-8B-Instruct-AlienLM-50-all-tokenizer-v3-32-qwenv2/checkpoint-4654"
+      echo "${FULL_ONE_EPOCH_MODEL_PATH:?set FULL_ONE_EPOCH_MODEL_PATH or pass an explicit model path}"
       ;;
     full-2epoch)
-      echo "/workspace/data2/jaehee/AlienLM/outputs/Llama3-8B-Instruct-AlienLM-50-all-tokenizer-v3-32-qwenv2/checkpoint-9306"
+      echo "${FULL_TWO_EPOCH_MODEL_PATH:?set FULL_TWO_EPOCH_MODEL_PATH or pass an explicit model path}"
       ;;
     50k)
-      echo "/workspace/data2/jaehee/AlienLM/outputs/icml2026-rebuttal/data-volume/Llama3-8B-Instruct-AlienLM-50k-stepmatch4654-qwenv2-seed42-ga2"
+      echo "${DATA_VOLUME_50K_MODEL_PATH:?set DATA_VOLUME_50K_MODEL_PATH or pass an explicit model path}"
       ;;
     150k)
-      echo "/workspace/data2/jaehee/AlienLM/outputs/icml2026-rebuttal/data-volume/Llama3-8B-Instruct-AlienLM-150k-stepmatch4654-qwenv2-seed42-ga2"
+      echo "${DATA_VOLUME_150K_MODEL_PATH:?set DATA_VOLUME_150K_MODEL_PATH or pass an explicit model path}"
       ;;
     *)
       echo "$1"
@@ -159,7 +159,11 @@ if [[ "$SUITE" == "main" || "$SUITE" == "all" ]]; then
 fi
 
 if [[ "$SUITE" == "code" || "$SUITE" == "all" ]]; then
-  bash "$REPO_DIR/icml2026-submition/eval/scripts/utils/evaluate_code_evalplus.sh" \
+  if [[ -z "$ALIENLM_CODE_ROOT" ]]; then
+    echo "ALIENLM_CODE_ROOT is required for the code/EvalPlus suite." >&2
+    exit 1
+  fi
+  bash "$ALIENLM_CODE_ROOT/eval/scripts/utils/evaluate_code_evalplus.sh" \
     --model_path "$MODEL_PATH" \
     --output_dir "$RESULTS_DIR/$RUN_NAME/code" \
     --tensor_parallel_size "$TP"

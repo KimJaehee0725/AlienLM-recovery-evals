@@ -3,24 +3,31 @@
 set -euo pipefail
 
 MODEL_KEY="${1:-}"
-GPU_ID="${2:-4}"
+GPU_ID="${2:-0}"
 
 if [[ -z "${MODEL_KEY}" ]]; then
   echo "Usage: $0 <model_key> [gpu_id]"
-  echo "model_key: llama_original"
+  echo "model_key: llama_original | llama_alien | qwen_original | qwen_alien | gemma_original | gemma_alien"
   exit 1
 fi
 
-ROOT="/workspace/codes/AlienLMv2"
-VENV_PY="${ROOT}/.venv/bin/python"
-LOG_DIR="${ROOT}/icml2026-rebuttal/long-generation/logs"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+EXP_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+ALIENLM_CODE_ROOT="${ALIENLM_CODE_ROOT:-}"
+VENV_PY="${PYTHON_BIN:-${ALIENLM_CODE_ROOT:+$ALIENLM_CODE_ROOT/.venv/bin/python}}"
+VENV_PY="${VENV_PY:-python}"
+LOG_DIR="${LOG_DIR:-$EXP_DIR/logs}"
+OUTPUT_ROOT="${LONG_GENERATION_OUTPUT_ROOT:-$EXP_DIR/outputs}"
 mkdir -p "${LOG_DIR}"
 
-export HF_DATASETS_CACHE="${HF_DATASETS_CACHE:-/workspace/data2/jaehee/AlienLM/HF_DATASET}"
-export TRANSFORMERS_CACHE="${TRANSFORMERS_CACHE:-/workspace/CACHE/MODELS}"
-export HF_HOME="${HF_HOME:-/workspace/CACHE/MODELS}"
+DEFAULT_CACHE_ROOT="${HF_HOME:-$EXP_DIR/.cache}"
+export HF_HOME="$DEFAULT_CACHE_ROOT"
+export HF_DATASETS_CACHE="${HF_DATASETS_CACHE:-$DEFAULT_CACHE_ROOT/hf_datasets}"
+export TRANSFORMERS_CACHE="${TRANSFORMERS_CACHE:-$DEFAULT_CACHE_ROOT/hf_models}"
 export CUDA_VISIBLE_DEVICES="${GPU_ID}"
-export PYTHONPATH="${ROOT}/lm-evaluation-harness:${PYTHONPATH:-}"
+if [[ -n "$ALIENLM_CODE_ROOT" && -d "$ALIENLM_CODE_ROOT/lm-evaluation-harness" ]]; then
+  export PYTHONPATH="$ALIENLM_CODE_ROOT/lm-evaluation-harness:${PYTHONPATH:-}"
+fi
 
 MODEL_PATH=""
 TOKENIZER_PATH=""
@@ -29,10 +36,40 @@ RUN_NAME=""
 
 case "${MODEL_KEY}" in
   llama_original)
-    MODEL_PATH="/workspace/CACHE/MODELS/models--meta-llama--Meta-Llama-3-8B-Instruct/snapshots/8afb486c1db24fe5011ec46dfbe5b5dccdb575c2"
-    TOKENIZER_PATH="${MODEL_PATH}"
-    OUTPUT_PATH="/workspace/data2/jaehee/AlienLM/outputs/icml2026-rebuttal/long-generation/meta-llama/Meta-Llama-3-8B-Instruct"
+    MODEL_PATH="${LLAMA_MODEL_PATH:-meta-llama/Meta-Llama-3-8B-Instruct}"
+    TOKENIZER_PATH="${LLAMA_TOKENIZER_PATH:-${MODEL_PATH}}"
+    OUTPUT_PATH="${OUTPUT_ROOT}/llama_original"
     RUN_NAME="llama_original_truthfulqa_gen"
+    ;;
+  llama_alien)
+    MODEL_PATH="${LLAMA_ALIEN_MODEL_PATH:-dsba-lab/llama3-8b-instruct-alienlm-full}"
+    TOKENIZER_PATH="${LLAMA_ALIEN_TOKENIZER_PATH:-${MODEL_PATH}}"
+    OUTPUT_PATH="${OUTPUT_ROOT}/llama_alien"
+    RUN_NAME="llama_alien_truthfulqa_gen"
+    ;;
+  qwen_original)
+    MODEL_PATH="${QWEN_MODEL_PATH:-Qwen/Qwen2.5-7B-Instruct}"
+    TOKENIZER_PATH="${QWEN_TOKENIZER_PATH:-${MODEL_PATH}}"
+    OUTPUT_PATH="${OUTPUT_ROOT}/qwen_original"
+    RUN_NAME="qwen_original_truthfulqa_gen"
+    ;;
+  qwen_alien)
+    MODEL_PATH="${QWEN_ALIEN_MODEL_PATH:?set QWEN_ALIEN_MODEL_PATH}"
+    TOKENIZER_PATH="${QWEN_ALIEN_TOKENIZER_PATH:-${MODEL_PATH}}"
+    OUTPUT_PATH="${OUTPUT_ROOT}/qwen_alien"
+    RUN_NAME="qwen_alien_truthfulqa_gen"
+    ;;
+  gemma_original)
+    MODEL_PATH="${GEMMA_MODEL_PATH:-google/gemma-2-9b-it}"
+    TOKENIZER_PATH="${GEMMA_TOKENIZER_PATH:-${MODEL_PATH}}"
+    OUTPUT_PATH="${OUTPUT_ROOT}/gemma_original"
+    RUN_NAME="gemma_original_truthfulqa_gen"
+    ;;
+  gemma_alien)
+    MODEL_PATH="${GEMMA_ALIEN_MODEL_PATH:?set GEMMA_ALIEN_MODEL_PATH}"
+    TOKENIZER_PATH="${GEMMA_ALIEN_TOKENIZER_PATH:-${MODEL_PATH}}"
+    OUTPUT_PATH="${OUTPUT_ROOT}/gemma_alien"
+    RUN_NAME="gemma_alien_truthfulqa_gen"
     ;;
   *)
     echo "Unknown model_key: ${MODEL_KEY}"

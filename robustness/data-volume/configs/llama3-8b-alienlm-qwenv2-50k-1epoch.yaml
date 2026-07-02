@@ -1,14 +1,14 @@
-base_model: /workspace/CACHE/MODELS/models--meta-llama--Meta-Llama-3-8B-Instruct/snapshots/8afb486c1db24fe5011ec46dfbe5b5dccdb575c2
+base_model: meta-llama/Meta-Llama-3-8B-Instruct
 model_type: LlamaForCausalLM
 tokenizer_type: AutoTokenizer
-tokenizer_config: /workspace/data2/jaehee/AlienLM/outputs/Llama3-8B-Instruct-AlienLM-50-all-tokenizer-v3-32-qwenv2/checkpoint-9306
+tokenizer_config: dsba-lab/llama3-8b-instruct-alienlm-full
 
 load_in_8bit: false
 load_in_4bit: false
 strict: false
 
 datasets:
-  - path: /workspace/codes/AlienLMv2/icml2026-rebuttal/data-volume/data/subsets/magpie_mix_50k_seed42.jsonl
+  - path: data/subsets/magpie_mix_50k_seed42.jsonl
     type: chat_template
     chat_template: llama3
     conversation: llama3
@@ -20,9 +20,9 @@ datasets:
       assistant: ["gpt", "assistant", "ai"]
       system: ["system"]
 
-dataset_prepared_path: /workspace/codes/AlienLMv2/icml2026-rebuttal/data-volume/data-prepared/magpie_mix_50k_seed42_stepmatch_eval
+dataset_prepared_path: data-prepared/magpie_mix_50k_seed42_stepmatch_eval
 val_set_size: 0.001
-output_dir: /workspace/data2/jaehee/AlienLM/outputs/icml2026-rebuttal/data-volume/Llama3-8B-Instruct-AlienLM-50k-stepmatch4654-qwenv2-seed42-ga2
+output_dir: outputs/Llama3-8B-Instruct-AlienLM-50k-stepmatch4654-qwenv2-seed42-ga2
 
 sequence_len: 2048
 sample_packing: true
@@ -53,7 +53,7 @@ gradient_checkpointing: true
 gradient_checkpointing_kwargs:
   use_reentrant: false
 early_stopping_patience:
-resume_from_checkpoint: /workspace/data2/jaehee/AlienLM/outputs/icml2026-rebuttal/data-volume/Llama3-8B-Instruct-AlienLM-50k-stepmatch4654-qwenv2-seed42-ga2/checkpoint-2000-nooptresume
+resume_from_checkpoint:
 auto_resume_from_checkpoints: false
 logging_steps: 1
 xformers_attention:

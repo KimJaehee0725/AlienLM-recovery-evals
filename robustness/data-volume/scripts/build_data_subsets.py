@@ -27,6 +27,7 @@ DATASET_SPECS = [
 
 
 def parse_args() -> argparse.Namespace:
+    default_output_dir = Path(__file__).resolve().parents[1] / "data" / "subsets"
     parser = argparse.ArgumentParser(description="Build random data-volume subsets for rebuttal experiments.")
     parser.add_argument(
         "--sizes",
@@ -44,7 +45,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=Path("/workspace/codes/AlienLMv2/icml2026-rebuttal/data-volume/data/subsets"),
+        default=default_output_dir,
         help="Directory where subset JSONL files and metadata are written.",
     )
     parser.add_argument(

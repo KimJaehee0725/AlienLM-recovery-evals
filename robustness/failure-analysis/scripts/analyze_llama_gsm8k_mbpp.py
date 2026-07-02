@@ -3,55 +3,49 @@ from __future__ import annotations
 import ast
 import builtins
 import json
+import os
 import re
 import statistics as st
 from pathlib import Path
 from typing import Any
 
 
-ROOT = Path("/workspace/codes/AlienLMv2")
-OUTPUT_ROOT = Path("/workspace/data2/jaehee/AlienLM/outputs")
-MODEL_CACHE_ROOT = Path("/workspace/CACHE/MODELS")
+EXP_DIR = Path(__file__).resolve().parents[1]
+OUTPUT_ROOT = Path(os.environ.get("EVAL_OUTPUT_ROOT", EXP_DIR / "outputs"))
+RESULTS_DIR = Path(os.environ.get("OUTPUT_DIR", EXP_DIR / "results"))
 
-FAILURE_ROOT = ROOT / "icml2026-rebuttal" / "failure-analysis"
-RESULTS_DIR = FAILURE_ROOT / "results"
+LLAMA_TOKENIZER_PATH = os.environ.get("LLAMA_TOKENIZER_PATH", "meta-llama/Meta-Llama-3-8B-Instruct")
+ALIEN_TOKENIZER_PATH = os.environ.get(
+    "LLAMA_ALIEN_TOKENIZER_PATH", "dsba-lab/llama3-8b-instruct-alienlm-full"
+)
+LOCAL_FILES_ONLY = os.environ.get("LOCAL_FILES_ONLY", "0") == "1"
 
-LLAMA_CACHE_DIR = MODEL_CACHE_ROOT / "models--meta-llama--Meta-Llama-3-8B-Instruct"
-ALIEN_TOKENIZER_DIR = (
-    OUTPUT_ROOT
-    / "Llama3-8B-Instruct-AlienLM-50-all-tokenizer-v3-32-qwenv2"
-    / "checkpoint-9306"
-)
 
-GSM8K_ORIG_PATH = (
-    OUTPUT_ROOT
-    / "meta-llama/Meta-Llama-3-8B-Instruct/gsm8k_cot/5-shot/"
-    / "meta-llama__Meta-Llama-3-8B-Instruct/"
-    / "samples_gsm8k_cot_2025-01-31T09-56-29.343109.jsonl"
-)
-GSM8K_ALIEN_PATH = (
-    OUTPUT_ROOT
-    / "Llama3-8B-Instruct-AlienLM-50-all-tokenizer-v3-32-qwenv2/gsm8k_cot/5-shot/"
-    / "__workspace__data2__jaehee__AlienLM__outputs__Llama3-8B-Instruct-AlienLM-50-all-tokenizer-v3-32-qwenv2/"
-    / "samples_gsm8k_cot_2025-03-01T10-08-25.310237.jsonl"
-)
+def discover_sample_path(env_name: str, pattern: str) -> Path:
+    if os.environ.get(env_name):
+        return Path(os.environ[env_name])
+    matches = sorted(OUTPUT_ROOT.glob(pattern))
+    if matches:
+        return matches[-1]
+    return OUTPUT_ROOT / f"missing_{env_name.lower()}.jsonl"
 
-MBPP_ORIG_PATH = (
-    OUTPUT_ROOT
-    / "meta-llama/Meta-Llama-3-8B-Instruct/mbpp/3-shot-vllm/"
-    / "meta-llama__Meta-Llama-3-8B-Instruct/"
-    / "samples_mbpp_2025-06-04T09-27-04.798354.jsonl"
+
+GSM8K_ORIG_PATH = discover_sample_path(
+    "GSM8K_ORIG_PATH", "llama_original/gsm8k_cot/5-shot/**/samples_gsm8k_cot*.jsonl"
 )
-MBPP_ALIEN_PATH = (
-    OUTPUT_ROOT
-    / "Llama3-8B-Instruct-AlienLM-50-all-tokenizer-v3-32-qwenv2/mbpp/3-shot-vllm/"
-    / "__workspace__data2__jaehee__AlienLM__outputs__Llama3-8B-Instruct-AlienLM-50-all-tokenizer-v3-32-qwenv2/"
-    / "samples_mbpp_2025-06-04T12-26-16.756459.jsonl"
+GSM8K_ALIEN_PATH = discover_sample_path(
+    "GSM8K_ALIEN_PATH", "llama_alien/gsm8k_cot/5-shot/**/samples_gsm8k_cot*.jsonl"
+)
+MBPP_ORIG_PATH = discover_sample_path(
+    "MBPP_ORIG_PATH", "llama_original/mbpp/3-shot-vllm/**/samples_mbpp*.jsonl"
+)
+MBPP_ALIEN_PATH = discover_sample_path(
+    "MBPP_ALIEN_PATH", "llama_alien/mbpp/3-shot-vllm/**/samples_mbpp*.jsonl"
 )
 
 SUMMARY_JSON = RESULTS_DIR / "llama_gsm8k_mbpp_summary.json"
 DETAILED_MD = RESULTS_DIR / "llama_gsm8k_mbpp_detailed.md"
-PAPER_MD = RESULTS_DIR / "llama_gsm8k_mbpp_paper_notes.md"
+PAPER_MD = RESULTS_DIR / "llama_gsm8k_mbpp_paper_summary.md"
 
 RATE_TERMS = {
     "each",
@@ -112,19 +106,20 @@ def excerpt(text: str, limit: int = 320) -> str:
     return text if len(text) <= limit else text[: limit - 3] + "..."
 
 
-def load_llama_snapshot_dir() -> Path:
-    snapshot_ref = (LLAMA_CACHE_DIR / "refs" / "main").read_text().strip()
-    return LLAMA_CACHE_DIR / "snapshots" / snapshot_ref
-
-
 def compute_prompt_token_stats() -> dict[str, Any] | None:
     try:
         from transformers import AutoTokenizer
     except Exception:
         return None
 
-    llama_tokenizer = AutoTokenizer.from_pretrained(load_llama_snapshot_dir())
-    alien_tokenizer = AutoTokenizer.from_pretrained(ALIEN_TOKENIZER_DIR)
+    llama_tokenizer = AutoTokenizer.from_pretrained(
+        LLAMA_TOKENIZER_PATH,
+        local_files_only=LOCAL_FILES_ONLY,
+    )
+    alien_tokenizer = AutoTokenizer.from_pretrained(
+        ALIEN_TOKENIZER_PATH,
+        local_files_only=LOCAL_FILES_ONLY,
+    )
 
     pairs = {
         "gsm8k": (GSM8K_ORIG_PATH, GSM8K_ALIEN_PATH),
@@ -649,7 +644,7 @@ def build_paper_md(summary: dict[str, Any]) -> str:
     gsm8k = summary["gsm8k"]
     mbpp = summary["mbpp"]
     lines: list[str] = []
-    lines.append("# Paper Notes: Llama Failure Analysis on GSM8K and MBPP")
+    lines.append("# Paper Summary: Llama Failure Analysis on GSM8K and MBPP")
     lines.append("")
     lines.append("## Main Claim")
     lines.append("")
@@ -698,6 +693,23 @@ def build_paper_md(summary: dict[str, Any]) -> str:
 
 def main() -> None:
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+    missing = [
+        (name, path)
+        for name, path in [
+            ("GSM8K_ORIG_PATH", GSM8K_ORIG_PATH),
+            ("GSM8K_ALIEN_PATH", GSM8K_ALIEN_PATH),
+            ("MBPP_ORIG_PATH", MBPP_ORIG_PATH),
+            ("MBPP_ALIEN_PATH", MBPP_ALIEN_PATH),
+        ]
+        if not path.exists()
+    ]
+    if missing:
+        lines = ["Missing required evaluation sample files:"]
+        for name, path in missing:
+            lines.append(f"- {name}: {path}")
+        lines.append("Set EVAL_OUTPUT_ROOT or the explicit *_PATH environment variables.")
+        raise FileNotFoundError("\n".join(lines))
+
     prompt_token_stats = compute_prompt_token_stats()
     summary = {
         "gsm8k": analyze_gsm8k(prompt_token_stats),

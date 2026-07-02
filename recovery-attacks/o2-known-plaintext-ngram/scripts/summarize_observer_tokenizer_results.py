@@ -6,8 +6,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 RESULT_ROOT = ROOT / "results" / "observer_tokenizer_sweep_n3_k10000_c0p01"
-DETAIL_MD = ROOT / "notes" / "observer_tokenizer_sweep_n3_k10000_c0p01.md"
-PAPER_MD = ROOT / "notes" / "observer_tokenizer_sweep_paper_notes.md"
+SUMMARY_DIR = ROOT / "results" / "summaries"
+DETAIL_MD = SUMMARY_DIR / "observer_tokenizer_sweep_n3_k10000_c0p01.md"
+PAPER_MD = SUMMARY_DIR / "observer_tokenizer_sweep_paper_summary.md"
 
 
 def fmt_pct(value: float) -> str:

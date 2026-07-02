@@ -27,3 +27,9 @@ known_mappings.json
 # Archives and OS/editor noise
 *.zip
 .DS_Store
+
+# Internal working docs — kept on disk, never published
+notes/
+**/notes/
+*paper_notes*.md
+**/status-*.md

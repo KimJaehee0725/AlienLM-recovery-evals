@@ -1,0 +1,28 @@
+{
+  "alien_tokenizer_paths": [
+    "/workspace/codes/AlienLMv2/alien_tokenizer/tokenizers/qwenv2_bucket_random_5_seed-42"
+  ],
+  "assignment_counts": {
+    "0": 21000
+  },
+  "assignment_mode": "shared",
+  "assignment_seed": 42,
+  "dataset_counts": {
+    "pro": 0,
+    "reasoning": 21000
+  },
+  "k_values": [
+    1000,
+    5000,
+    10000
+  ],
+  "min_confidence": 0.95,
+  "min_occurrences": 3,
+  "n": 3,
+  "org_tokenizer_path": "/workspace/CACHE/MODELS/models--meta-llama--Meta-Llama-3-8B-Instruct/snapshots/8afb486c1db24fe5011ec46dfbe5b5dccdb575c2",
+  "reference_corpus": "tulu3",
+  "reference_size": 10000,
+  "test_size": 1000,
+  "top_k_tokens": 1000,
+  "train_size": 10000
+}

@@ -1,0 +1,28 @@
+[project]
+name = "translator-trainer"
+version = "0.1.0"
+description = "Train translation model to decrypt alien text"
+readme = "TRANSLATOR_TRAINING_README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.0.0",
+    "transformers>=4.40.0",
+    "datasets>=2.14.0",
+    "accelerate>=0.25.0",
+    "sentencepiece>=0.1.99",
+    "protobuf>=3.20.0",
+    # 평가에 필요한 의존성
+    "sacrebleu>=2.3.0",
+    "rouge-score>=0.1.2",
+    "openai>=1.0.0",
+    "numpy>=1.24.0",
+    "tqdm>=4.65.0",
+    # nltk는 METEOR를 사용할 때만 필요 (현재는 사용 안 함)
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["translator"]
